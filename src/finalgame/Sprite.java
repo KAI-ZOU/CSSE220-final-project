@@ -17,7 +17,7 @@ public class Sprite {
 	public Rectangle[] attackingCollisionBoxes;
 	public Rectangle[] selfCollisionBoxes;
 	public BufferedImage image;
-	private boolean spriteLoaded = false;
+	public boolean spriteLoaded = false;
     
 	
 	public Sprite(int width, int height, String filePath) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
@@ -40,16 +40,16 @@ public class Sprite {
 	
 	// maybe add paintcomponent (replaces draw
 	
-	public void paintComponent (Graphics g2, int x, int y) {
-		if (spriteLoaded) {
-    		g2.drawImage(image, x, y, width, height, null);
-    	}
-    	else {
-//        g2.setColor(Color.BLACK);
-//        g2.fillOval(x, drawY, size, size);
-//    		 there really just... shouldn't be an else
-    	}
-	}
+//	public void paintComponent (Graphics g2, int x, int y) {
+//		if (spriteLoaded) {
+//    		g2.drawImage(image, x, y, width, height, null);
+//    	}
+//    	else {
+////        g2.setColor(Color.BLACK);
+////        g2.fillOval(x, drawY, size, size);
+////    		 there really just... shouldn't be an else
+//    	}
+//	}
 
 	// a bounding box (general)
 	// a bounding box (specific)

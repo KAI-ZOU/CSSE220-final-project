@@ -1,6 +1,7 @@
 package finalgame;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
@@ -40,7 +41,7 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 	}
 	
 	public void updatePosition() {
-		// gaaaaah. maybe add velocity parameters.
+		// gaaaaah. maybe add vel
 	}
 	
 	public void getbounds() {// may use something like this, may just use sprite direct
@@ -54,7 +55,11 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		usedSprite.paintComponent(g, xPosition, yPosition);
+		Graphics2D g2 = (Graphics2D) g;
+		if (usedSprite.spriteLoaded) {
+			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null);
+		}
+//		usedSprite.paintComponent(g, xPosition, yPosition);
 	}
 	
 //	public abstract void draw();
