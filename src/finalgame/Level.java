@@ -175,7 +175,7 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 					if (pressedKeys.contains(KeyEvent.VK_E)) {
 						item.collected = true;
 //						objects.remove(obj); // does not work. crashes game (modifying arraylist as we iterate).
-						toRemove.add(obj);
+						toRemove.add(obj); // maybe add a flag for respawning per level, where whenever an item is removed, another one spawns in (between a platform's top x and 10 pixels above, accounting for movement)
 
 					}
 				}
