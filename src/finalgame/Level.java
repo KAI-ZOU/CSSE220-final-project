@@ -1,6 +1,7 @@
 package finalgame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -39,6 +40,9 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 	int prevY;
 	ArrayList<GameObject> toRemove = new ArrayList<>();
 	
+	long pastTime = System.currentTimeMillis();
+	long iFrame = 300;
+	
 	
 	// add or remove objects from view
 	// update objects' movement
@@ -53,15 +57,20 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 //        this.setBackground(stage.testingColor);
 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
+		this.setBackground(Color.BLACK);
+//		this.add(stage);
 		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}));
-		objects.add(new Platform(0, 300, 180, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
-		objects.add(new Platform(0, 200, 220, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 200, 240, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
-		objects.add(new Platform(0, 50, 270, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "tennis.png")}));
 
-		objects.add(new Platform(0, 450, 230, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 700, 400, 0, 120, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
-		objects.add(new Enemy(0, 600, 120, 100, 20, 2, 1, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+		objects.add(new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+
+		objects.add(new Enemy(0, 450, 120, 100, 20, 2, 1, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
 //		objects.get(2).update();
 		repaint();
 		
@@ -148,10 +157,14 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 				else if (obj instanceof Enemy) {
 					Enemy enemy = (Enemy) obj; // may not need this.
 //					if (pressedKeys.contains(KeyEvent.VK_Q)) {
-
 						enemy.hitPlayer = true;
-						player.velocityX-=7; // update to have it work no matter what the collision direction is
-//					}
+						
+					    if (System.currentTimeMillis()-pastTime>=iFrame) {
+					    	enemy.hitPlayer = true;
+					    	pastTime = System.currentTimeMillis();
+							player.velocityX-=7; // update to have it work no matter what the collision direction is
+
+					    }					
 //					else {
 //						enemy.hitPlayer = false;
 //					}

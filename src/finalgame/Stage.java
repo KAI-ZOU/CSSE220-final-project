@@ -1,5 +1,6 @@
 package finalgame;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -11,10 +12,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 // pretty much just the background, should have no actual effect on the player or other entities or objects
+// DO SOMETHING TO CENTER EVERYTHING EVEN WHEN WINDOW IS EXPANDED
 public class Stage extends JComponent{
 	
-	public static final int WIDTH = 700;
-	public static final int HEIGHT = 300;
+	public static final int WIDTH = 1000;
+	public static final int HEIGHT = 700;
 //	public int WIDTH = 700;
 //	public int HEIGHT = 300;
 //	public final Color testingColor = Color.DARK_GRAY;
@@ -27,6 +29,7 @@ public class Stage extends JComponent{
 	
 	public Stage(String filePath) {
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+//		this.setLayout(new BorderLayout());
 		
 		try {
 			image = ImageIO.read(Sprite.class.getResource(filePath));
