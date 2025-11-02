@@ -1,8 +1,10 @@
 package finalgame;
 
+import java.awt.Graphics;
+
 public class Player extends Entity{
 
-	// skills and other perm shit
+	// skills and other perm
 	int[] levelsCleared;
 	int movementSpeed;
 	// something for iframes when hitting a damaging platform
@@ -24,4 +26,10 @@ public class Player extends Entity{
 		
 	}
 	// score
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		// TODO Auto-generated method stub
+		
+	}
 }

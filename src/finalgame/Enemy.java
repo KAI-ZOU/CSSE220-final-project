@@ -1,5 +1,7 @@
 package finalgame;
 
+import java.awt.Graphics;
+
 public class Enemy extends Entity{
 
 //	boolean specialMovement;///???? maybe? something using math random, where it changes based off a timer, but is more likely to go towards the player (or away from them). could also do specialenemy instead
@@ -15,6 +17,12 @@ public class Enemy extends Entity{
 
 	@Override
 	public void render() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		
 	}

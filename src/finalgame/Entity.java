@@ -1,8 +1,7 @@
 package finalgame;
 
 public abstract class Entity extends GameObject{
-	// hp
-	// velocity
+
 	int hp;
 	int velocityx;
 	int velocityy;
@@ -21,7 +20,8 @@ public abstract class Entity extends GameObject{
 	}
 	
 	private void setPosition() {
-		
+		xPosition+=velocityx;
+		yPosition+=velocityy;
 	}
 	
 	public void getNextPosition() { // NEED TO THINK WAY MORE ABOUT THIS ONE.

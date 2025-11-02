@@ -1,8 +1,11 @@
 package finalgame;
 
+import java.awt.Graphics;
 import java.util.HashMap;
 
-public abstract class GameObject {
+import javax.swing.JComponent;
+
+public abstract class GameObject extends JComponent{ // is a component of the panel
 	// bounding box
 	// collision box
 	// getupperboundx
@@ -34,9 +37,19 @@ public abstract class GameObject {
 		this.usedSprite = sprites.get(spriteName);
 	}
 	
-	public void getbounds() {
+	public void getbounds() {// may use something like this, may just use sprite direct
 		// returns an array of 4;
 	}
 	
 	public abstract void render();
+	
+	public abstract void update();
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		usedSprite.paintComponent(g, xPosition, yPosition);
+	}
+	
+//	public abstract void draw();
 }
