@@ -66,13 +66,6 @@ public class Player extends Entity{
 	    velocityY = Math.clamp(velocityY, -maxSpeedY, maxSpeedY);
 	}
 
-	@Override
-	public void render() {
-		// TODO Auto-generated method stub
-		
-	}
-	// score
-
 
 	@Override
 	public void update() { // take care of it later

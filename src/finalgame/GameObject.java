@@ -23,15 +23,29 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 	public String spriteName = "DEFAULT";
 	// never mind. seems like collisiontype isn't needed.
 	public String collisionType; // whether the object has a solid collision (effects movement) or not. may change to a case-like thing for solid, interactable, or damaging. could just be a string where we check the value with conditionals. probably will do thatr.
+	int initialXPosition;
+	int initialYPosition;
+	int velocityX;
+	int velocityY;
+	int movementRangeX;
+	int movementRangeY;
 	
-	public GameObject() {
-//		sprites.put("DEFAULT", usedSprite);
+	
+	public GameObject(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
+		this(id, xPosition, yPosition, spriteNames, sprites);
+		initialXPosition = xPosition;
+		initialYPosition = yPosition;
+		this.velocityX = -velocityX;
+		this.velocityY = -velocityY;
+		this.movementRangeX = movementRangeX;
+		this.movementRangeY = movementRangeY;
 	}
 	
 	public GameObject(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) { // REWRITE CONSTRUCTOR TO USE FILE 
 		this.id = id;
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
+		
 		usedSprite = sprites[0];
 //		for (int i = 0; i < spriteNames) { // TECHNICALLY SHOULD CHECK FOR NAMES AND SPRITES BEING SAME LENGTH
 //			
@@ -51,9 +65,25 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 		// returns an array of 4;
 	}
 	
-	public abstract void render(); // will likely delete
-	
-	public abstract void update(); // will likely delete
+	public void update() {
+		// logic for automatic movement based off the given movement range. be careful of inputting velocity values in the constructor with the wrong signs.
+		if (xPosition <= initialXPosition) {
+			velocityX = -velocityX;
+		}
+		else if (xPosition >= initialXPosition+movementRangeX) {
+			velocityX=-velocityX;
+		}
+		if (yPosition <= initialYPosition) {
+			velocityY = -velocityY;
+		}
+		else 
+		if (yPosition >= initialYPosition+movementRangeY) {
+			velocityY=-velocityY;
+		}
+		xPosition += velocityX;
+		yPosition += velocityY;
+		
+	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {

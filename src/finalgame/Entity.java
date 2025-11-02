@@ -3,8 +3,8 @@ package finalgame;
 public abstract class Entity extends GameObject{
 
 	int hp;
-	int velocityX;
-	int velocityY;
+//	int velocityX;
+//	int velocityY;
 	int movementSpeedX; // might not implement
 	int movementSpeedY; // might not
 //	HeldItem item; // uh.. idk. // later, might not
@@ -15,8 +15,9 @@ public abstract class Entity extends GameObject{
 		// TODO Auto-generated constructor stub
 	}
 
-	public abstract void update();
-	
+	public Entity(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
+		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
+	}
 	public void setVelocity() {
 		
 	}

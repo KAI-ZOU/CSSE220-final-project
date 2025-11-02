@@ -14,20 +14,9 @@ public class Item extends GameObject{
 		collisionType = "COLLECT";
 	}
 	
-	public void collect(){
-		
-	}
 
-	@Override
-	public void render() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
+	public Item(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
+		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
 	}
 	
 	@Override

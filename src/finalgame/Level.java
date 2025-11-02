@@ -53,13 +53,13 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 //        this.setBackground(stage.testingColor);
 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
-		objects.add(new Item(0, 300, 100, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}));
+		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}));
 		objects.add(new Platform(0, 300, 180, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 		objects.add(new Platform(0, 200, 220, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
-		objects.add(new Platform(0, 50, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 50, 270, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
-		objects.add(new Platform(0, 450, 230, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 450, 230, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
 		objects.add(new Enemy(0, 600, 120, 100, 20, 2, 1, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
 //		objects.get(2).update();
@@ -103,13 +103,7 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 //			if (player.usedSprite.boundingBox.intersects(obj.usedSprite.boundingBox)) { // NEED TO IMPLEMENT STUFF FOR ENEMIES/ITEMS THAT SHOULD NOT SHOVE THE PLAYER (JUST A SIMPLE CONDITIONAL CHECK FOR INTERACTABLE) THEN IF NOT INTERACTABLE HAVE OTHER CASES, OR SOMETHING. MAY WANT TOIMPLEMENT MULTIPLE COLLISION BOXES (BOTH HITBOXES AND HURTBOXES?)
 				if (obj instanceof Platform) {
 					Platform platform = (Platform) obj; // may not need this.
-
-//					switch(obj.collisionType) {
-//					
-//				case "SOLID":
-					// used to switch with a string collisiontype. changed.
-					// used to be conditional (boolean). changed.
-//					if (obj.collisionType) { // will need a check in here for hurting platforms. consider doing something since we'll have similar stuff below for normal enemies etc.
+					// will need a check in here for hurting platforms. consider doing something since we'll have similar stuff below for normal enemies etc.
 
 						// also only does collisions for the player, not enemy and platform/enemy and enemy/enemy and item/etc
 						// assumes one rectangle for both objects
@@ -146,27 +140,9 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 						        	player.yPosition += overlapTop;
 						        }
 						        player.velocityY = 0;
-						}	
-//					}
-//					else {
+						}
 //						// for damaging do a thing with a translucent background to make the screen part red. also maybe control the short iframes here.
-//					}
-
-//				}
-//					break;
-//				case "DAMAGE":
-//					break;
-//				case "COLLECT":
-//					if (pressedKeys.contains(KeyEvent.VK_E)) {
-//						if (obj instanceof Item) {
-//							
-//						}
-//						Item a = (Item) obj;
-//						a.scoreGiven = 1;
-//					}
-//					break;
-//				default:
-//				}
+//					
 				}
 				
 				else if (obj instanceof Enemy) {
@@ -174,6 +150,7 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 //					if (pressedKeys.contains(KeyEvent.VK_Q)) {
 
 						enemy.hitPlayer = true;
+						player.velocityX-=7; // update to have it work no matter what the collision direction is
 //					}
 //					else {
 //						enemy.hitPlayer = false;
