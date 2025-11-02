@@ -9,6 +9,11 @@ public abstract class Entity extends GameObject{
 	int movementSpeedY; // 
 //	HeldItem item; // uh.. idk. // later
 	
+	public Entity(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
+		super(id, xPosition, yPosition, spriteNames, sprites);
+		// TODO Auto-generated constructor stub
+	}
+
 	public abstract void update();
 	
 	public void setVelocity() {

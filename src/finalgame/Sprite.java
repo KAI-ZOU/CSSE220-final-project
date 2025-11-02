@@ -21,7 +21,9 @@ public class Sprite {
     
 	
 	public Sprite(int width, int height, String filePath) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
-		
+		this.width = width;
+		this.height = height;
+		boundingBox = new Rectangle(width, height);
 		
 
         try {
@@ -40,7 +42,7 @@ public class Sprite {
 	
 	public void paintComponent (Graphics g2, int x, int y) {
 		if (spriteLoaded) {
-    		g2.drawImage(image, x, y, boundingBox.width, boundingBox.height, null);
+    		g2.drawImage(image, x, y, width, height, null);
     	}
     	else {
 //        g2.setColor(Color.BLACK);

@@ -15,18 +15,20 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 	// autocollide (damage)
 	// interactcollide
 	public HashMap<String, Sprite> sprites = new HashMap<>();
+//	public Sprite usedSprite = new Sprite(100, 100, 10, 10, "tennis.png");
 	public Sprite usedSprite;
 	public int xPosition, yPosition;
 	public int id;
 	public String spriteName = "DEFAULT";
 	public GameObject() {
-		sprites.put("DEFAULT", usedSprite);
+//		sprites.put("DEFAULT", usedSprite);
 	}
 	
 	public GameObject(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) { // REWRITE CONSTRUCTOR TO USE FILE 
 		this.id = id;
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
+		usedSprite = sprites[0];
 //		for (int i = 0; i < spriteNames) { // TECHNICALLY SHOULD CHECK FOR NAMES AND SPRITES BEING SAME LENGTH
 //			
 //		}
@@ -35,6 +37,10 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 	public void setSprite(String spriteName) {
 		this.spriteName = spriteName;
 		this.usedSprite = sprites.get(spriteName);
+	}
+	
+	public void updatePosition() {
+		// gaaaaah. maybe add velocity parameters.
 	}
 	
 	public void getbounds() {// may use something like this, may just use sprite direct

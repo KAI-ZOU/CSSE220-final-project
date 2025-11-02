@@ -8,6 +8,9 @@ public class Enemy extends Entity{
 	int movementRangeX;
 	int movementRangeY;
 	
+	public Enemy(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
+		super(id, xPosition, yPosition, spriteNames, sprites);
+	}
 	
 	@Override
 	public void update() {
@@ -21,10 +24,5 @@ public class Enemy extends Entity{
 		
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

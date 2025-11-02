@@ -14,6 +14,12 @@ public class Player extends Entity{
 	boolean dash;
 	boolean collectPowersUp;
 	
+	
+	public Player(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
+		super(id, xPosition, yPosition, spriteNames, sprites);
+	}
+	
+	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -27,9 +33,4 @@ public class Player extends Entity{
 	}
 	// score
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-		
-	}
 }
