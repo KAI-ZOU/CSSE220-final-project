@@ -19,8 +19,11 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 //	public Sprite usedSprite = new Sprite(100, 100, 10, 10, "tennis.png");
 	public Sprite usedSprite;
 	public int xPosition, yPosition;
-	public int id;
+	public int id; // don't really know that we need this? seems like we might not
 	public String spriteName = "DEFAULT";
+	// never mind. seems like collisiontype isn't needed.
+	public String collisionType; // whether the object has a solid collision (effects movement) or not. may change to a case-like thing for solid, interactable, or damaging. could just be a string where we check the value with conditionals. probably will do thatr.
+	
 	public GameObject() {
 //		sprites.put("DEFAULT", usedSprite);
 	}
@@ -48,9 +51,9 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 		// returns an array of 4;
 	}
 	
-	public abstract void render();
+	public abstract void render(); // will likely delete
 	
-	public abstract void update();
+	public abstract void update(); // will likely delete
 	
 	@Override
 	protected void paintComponent(Graphics g) {

@@ -6,6 +6,7 @@ public class Platform extends GameObject{
 
 	public Platform(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
 		super(id, xPosition, yPosition, spriteNames, sprites);
+		collisionType = "SOLID";
 	}
 	
 	@Override

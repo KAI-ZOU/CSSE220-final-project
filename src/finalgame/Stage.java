@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+// pretty much just the background, should have no actual effect on the player or other entities or objects
 public class Stage extends JComponent{
 	
 	public static final int WIDTH = 700;

@@ -14,7 +14,7 @@ public class Sprite {
 	public int width;//?
 	public int height;//?
 	public Rectangle boundingBox;
-	public Rectangle[] attackingCollisionBoxes;
+	public Rectangle[] attackingCollisionBoxes; // this and the one below might not be happening
 	public Rectangle[] selfCollisionBoxes;
 	public BufferedImage image;
 	public boolean spriteLoaded = false;
@@ -38,6 +38,7 @@ public class Sprite {
 		
 	}
 	
+	// most recent: not using paintcomponent from sprite anymore
 	// maybe add paintcomponent (replaces draw
 	
 //	public void paintComponent (Graphics g2, int x, int y) {
