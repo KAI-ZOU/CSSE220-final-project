@@ -19,9 +19,12 @@ public class Level extends JPanel{
 	Timer timer;
 	ArrayList<GameObject> objects = new ArrayList<>();
 	Player player;
-	private int requiredscore = 80;
+	
+	private int currentLevel = 1; 
+	private int requiredscore = 80; 
 	private int score = 0;
 	private boolean levelPassed = false;
+	private boolean gameFinished = false; 
 	Stage stage = new Stage("sceneTest.png");
 	private final int SPAWN_X = 400;
     private final int SPAWN_Y = 100;
@@ -36,13 +39,16 @@ public class Level extends JPanel{
 	long pastTime = System.currentTimeMillis();
 	long iFrame = 1000;
 	
-	private static final int MIN_COIN_DISTANCE = 80;
+	private static final int MIN_COIN_DISTANCE = 40;
+	private static final int COIN_POINT_VALUE = 20; 
 
 	public Level() { 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
 		
-		initializeLevelObjects();
+		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{""}, new Sprite[] {new Sprite(30, 30, "playerTest.png")});
+
+		loadLevel(currentLevel); 
 		
 		repaint();
 		
@@ -52,40 +58,79 @@ public class Level extends JPanel{
 		buildKeys();
 	}
 	
-	private void initializeLevelObjects() {
-		// Clear existing objects but keep player reference
+	private void loadLevel(int level) {
 		objects.clear();
 		platforms.clear();
 		
-		player = new Player(0, 300, 50, new String[]{""}, new Sprite[] {new Sprite(30, 30, "playerTest.png")});
 		player.hp = INITIAL_HP;
+        player.xPosition = SPAWN_X;
+        player.yPosition = SPAWN_Y;
 		
-        Platform p1 = new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
-		Platform p2 = new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
-		Platform p3 = new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
-		Platform p4 = new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "tennis.png")});
-		Platform p5 = new Platform(0, 700, 400, 0, 120, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
-		Platform p6 = new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+        int coinCount = 0;
 		
-		platforms.add(p1);
-		platforms.add(p2);
-		platforms.add(p3);
-		platforms.add(p4);
-		platforms.add(p5);
-		platforms.add(p6);
-		
-		objects.addAll(platforms); 
+        if (level == 1) {
+            requiredscore = 80; 
+            coinCount = 4;
+            
+            Platform p1 = new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+            Platform p2 = new Platform(0, 300, 270, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+            Platform p3 = new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+            Platform p4 = new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "tennis.png")});
+            Platform p5 = new Platform(0, 700, 400, 0, 120, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+            Platform p6 = new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+            
+            platforms.add(p1);
+            platforms.add(p2);
+            platforms.add(p3);
+            platforms.add(p4);
+            platforms.add(p5);
+            platforms.add(p6);
+            
+            objects.add(new Enemy(0, 450, 120, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 250, 690, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            
+        } else if (level == 2) {
+            requiredscore = 100; 
+            coinCount = 5;
 
-		objects.add(new Enemy(0, 450, 120, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
-		objects.add(new Enemy(0, 250, 690, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
-		objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
-
-		spawnCoins(4); 
+            platforms.add(new Platform(0, 100, 600, 800, 50, 0, 0, new String[]{""}, new Sprite[] {new Sprite(800, 50, "tennis.png")}));
+            
+            platforms.add(new Platform(0, 50, 400, 350, 0, 2, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+            
+            platforms.add(new Platform(0, 600, 400, 200, 15, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+            
+            platforms.add(new Platform(0, 200, 250, 150, 0, 3, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "tennis.png")}));
+            
+            platforms.add(new Platform(0, 800, 425, 0, 175, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "tennis.png")}));
+            
+            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 450, 200, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            
+        } else {
+            
+            return; 
+        }
+        
+        objects.addAll(platforms);
+        
+        spawnCoins(coinCount);
 	}
 	
-	/**
-     * Checks if a proposed spawn location for a coin is safely distanced from all existing Item objects.
-     */
+	private void advanceLevel() {
+	    currentLevel++;
+	    if (currentLevel > 2) { 
+	        gameFinished = true;
+	        timer.stop(); 
+	        levelPassed = false;
+	    } else {
+	        levelPassed = false;
+	        score = 0;
+	        loadLevel(currentLevel); 
+	    }
+	}
+
     private boolean isSafeToSpawn(int newX, int newY, int newWidth, int newHeight) {
         int newCenterX = newX + newWidth / 2;
         int newCenterY = newY + newHeight / 2;
@@ -116,7 +161,7 @@ public class Level extends JPanel{
         Random rand = new Random();
         int coinWidth = 30; 
         int coinHeight = 30; 
-        int coinScore = 20;
+        int coinScore = COIN_POINT_VALUE;
 
         for (int i = 0; i < count; i++) {
             Platform parentPlatform = platforms.get(rand.nextInt(platforms.size()));
@@ -139,18 +184,11 @@ public class Level extends JPanel{
                 }
             }
             if (!spawned) {
-                // If a coin cannot be spawned in a safe location, it just skips it.
+                
             }
         }
     }
 	
-	private void respawnPlayer() {
-	    player.xPosition = SPAWN_X; 
-	    player.yPosition = SPAWN_Y;
-	    player.hp = INITIAL_HP;
-	    score = 0;
-		spawnCoins(4-getCoinCount()); 
-	}
 	public int getCoinCount() {
 		int count = 0;
 		for (GameObject obj : objects) {
@@ -160,36 +198,56 @@ public class Level extends JPanel{
 		}
 		return count;
 	}
-	private void resetLevel() {
+	
+	private void restartLevel() {
 		levelPassed = false;
-		score = 0;
-		initializeLevelObjects(); // Re-initialize all objects (enemies, platforms, coins)
-		respawnPlayer();
+		score = 0; 
+		loadLevel(currentLevel); 
 	}
 
 	public void tick() {
-		 if (score >= requiredscore && !levelPassed) {
+		if (!gameFinished && score >= requiredscore && !levelPassed) {
 	            levelPassed = true;
-	        }
+	    }
 		
-		if (player.yPosition > Stage.HEIGHT) {
-            respawnPlayer();
+		
+		boolean fellToDeath = player.yPosition > Stage.HEIGHT;
+		
+		if ((fellToDeath || player.hp <= 0) && !levelPassed && !gameFinished) {
+            restartLevel();
+            repaint(); 
+            return; 
         }
-		if (player.hp <= 0) {
-            respawnPlayer();
-        }
+		
+		
 		if (player.isInvincible && System.currentTimeMillis() - pastTime >= iFrame) {
             player.isInvincible = false;
         }
 		
-		if (!levelPassed) {
+		if (!levelPassed && !gameFinished) { 
 			handleInput();
 			player.onGround = false;
 			prevX = player.xPosition;
 			prevY = player.yPosition;
 			player.update();
-		} else if (pressedKeys.contains(KeyEvent.VK_N)) {
-			resetLevel();
+			
+            if (player.xPosition < 0) {
+                player.xPosition = 0;
+                player.velocityX = 0;
+            } else if (player.xPosition + player.usedSprite.width > Stage.WIDTH) {
+                player.xPosition = Stage.WIDTH - player.usedSprite.width;
+                player.velocityX = 0;
+            }
+            
+            if (player.yPosition < 0) {
+                player.yPosition = 0;
+                player.velocityY = 0;
+            }
+            
+			
+		} else if (levelPassed && pressedKeys.contains(KeyEvent.VK_N)) {
+			
+			advanceLevel();
 		}
 		
 		for (GameObject obj: objects) {
@@ -268,7 +326,7 @@ public class Level extends JPanel{
 					Item item = (Item) obj;
 					if (pressedKeys.contains(KeyEvent.VK_E) && !levelPassed)
 					{
-						score += 20;
+						score += COIN_POINT_VALUE;
 						toRemove.add(obj);
 					}
 				}
@@ -331,30 +389,37 @@ protected void paintComponent(Graphics g) {
 	for (GameObject obj : objects) {
 		obj.paintComponent(g);
 	}
-	player.paintComponent(g);
+	
+	if (!gameFinished) {
+		player.paintComponent(g);
+	}
     
-    // Draw Player HP (Top Left)
-    g.setColor(Color.RED);
-    g.drawString("HP: " + player.hp + " / 100", 10, 20); 
-    
-    // Draw Score and Level Goal 
-    g.setColor(Color.YELLOW);
-    String scoreString = "SCORE: " + score + " / " + requiredscore;
-    if (levelPassed) {
-        scoreString += " - LEVEL COMPLETE!";
-        g.setColor(Color.GREEN);
+    if (!gameFinished) {
+	    g.setColor(Color.RED);
+	    g.drawString("HP: " + player.hp + " / 100", 10, 20); 
+	    
+	    g.setColor(Color.YELLOW);
+	    String scoreString = "SCORE: " + score + " / " + requiredscore;
+	    if (levelPassed) {
+	        scoreString += " - LEVEL COMPLETE!";
+	        g.setColor(Color.GREEN);
+	    }
+	    g.drawString(scoreString, 180, 20); 
+	    
+	    g.setColor(Color.CYAN);
+	    String coinCountString = "COINS LEFT: " + getCoinCount();
+	    g.drawString(coinCountString, 450, 20);
+	    
+	    g.setColor(Color.WHITE);
+	    g.drawString("LEVEL " + currentLevel, Stage.WIDTH - 80, 20);
     }
-    g.drawString(scoreString, 180, 20); 
     
-    // Draw Level Complete Overlay
     if (levelPassed) {
     	Graphics2D g2 = (Graphics2D) g;
     	
-        // Draw a semi-transparent black overlay
         g.setColor(new Color(0, 0, 0, 150)); 
         g.fillRect(0, 0, Stage.WIDTH, Stage.HEIGHT);
 
-        // Draw "LEVEL COMPLETE!"
         g2.setFont(new Font("Arial", Font.BOLD, 48));
         g.setColor(Color.WHITE);
         String completeText = "LEVEL COMPLETE!";
@@ -363,13 +428,34 @@ protected void paintComponent(Graphics g) {
         int textY = Stage.HEIGHT / 2 - 30;
         g.drawString(completeText, textX, textY);
 
-        // Draw "Press 'N' to continue"
         g2.setFont(new Font("Arial", Font.PLAIN, 24));
-        String instructionText = "Press 'N' to continue";
+        String instructionText = currentLevel < 2 ? "Press 'N' for Level " + (currentLevel + 1) : "Press 'N' to finish the game!";
         textWidth = g.getFontMetrics().stringWidth(instructionText);
         textX = (Stage.WIDTH - textWidth) / 2;
         textY = Stage.HEIGHT / 2 + 30;
         g.drawString(instructionText, textX, textY);
+    }
+    
+    if (gameFinished) {
+    	Graphics2D g2 = (Graphics2D) g;
+    	
+        g.setColor(new Color(0, 0, 0, 180)); 
+        g.fillRect(0, 0, Stage.WIDTH, Stage.HEIGHT);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 60));
+        g.setColor(Color.YELLOW);
+        String completeText = "GAME COMPLETED!";
+        int textWidth = g.getFontMetrics().stringWidth(completeText);
+        int textX = (Stage.WIDTH - textWidth) / 2;
+        int textY = Stage.HEIGHT / 2;
+        g.drawString(completeText, textX, textY);
+        
+        g2.setFont(new Font("Arial", Font.PLAIN, 24));
+        String messageText = "You collected all the treasures!";
+        textWidth = g.getFontMetrics().stringWidth(messageText);
+        textX = (Stage.WIDTH - textWidth) / 2;
+        textY = Stage.HEIGHT / 2 + 60;
+        g.drawString(messageText, textX, textY);
     }
 }
 }
