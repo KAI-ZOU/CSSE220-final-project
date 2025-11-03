@@ -2,7 +2,9 @@ package finalgame;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Level extends JPanel{
 	Timer timer;
 	ArrayList<GameObject> objects = new ArrayList<>();
 	Player player;
-	private int requiredscore = 60;
+	private int requiredscore = 80;
 	private int score = 0;
 	private boolean levelPassed = false;
 	Stage stage = new Stage("sceneTest.png");
@@ -26,7 +28,7 @@ public class Level extends JPanel{
     private final int INITIAL_HP = 100;
     private ArrayList<Platform> platforms = new ArrayList<>();
 	
-	private final Set<Integer> pressedKeys = new HashSet<>(); // 
+	private final Set<Integer> pressedKeys = new HashSet<>();
 	int prevX;
 	int prevY;
 	ArrayList<GameObject> toRemove = new ArrayList<>();
@@ -34,25 +36,14 @@ public class Level extends JPanel{
 	long pastTime = System.currentTimeMillis();
 	long iFrame = 1000;
 	
-	public Level() { 
-		
-		player = new Player(0, 300, 50, new String[]{""}, new Sprite[] {new Sprite(30, 30, "playerTest.png")});
+	private static final int MIN_COIN_DISTANCE = 80;
 
+	public Level() { 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
-		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}, score));
-		objects.add(new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
-		objects.add(new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
-
-		objects.add(new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
-		objects.add(new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "tennis.png")}));
-
-		objects.add(new Platform(0, 700, 400, 0, 120, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
-
-		objects.add(new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
-
-		objects.add(new Enemy(0, 450, 120, 100, 20, 2, 1, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
-		spawnCoins(3); 
+		
+		initializeLevelObjects();
+		
 		repaint();
 		
 		
@@ -60,6 +51,65 @@ public class Level extends JPanel{
 		timer.start();
 		buildKeys();
 	}
+	
+	private void initializeLevelObjects() {
+		// Clear existing objects but keep player reference
+		objects.clear();
+		platforms.clear();
+		
+		player = new Player(0, 300, 50, new String[]{""}, new Sprite[] {new Sprite(30, 30, "playerTest.png")});
+		player.hp = INITIAL_HP;
+		
+        Platform p1 = new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+		Platform p2 = new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+		Platform p3 = new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+		Platform p4 = new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "tennis.png")});
+		Platform p5 = new Platform(0, 700, 400, 0, 120, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+		Platform p6 = new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")});
+		
+		platforms.add(p1);
+		platforms.add(p2);
+		platforms.add(p3);
+		platforms.add(p4);
+		platforms.add(p5);
+		platforms.add(p6);
+		
+		objects.addAll(platforms); 
+
+		objects.add(new Enemy(0, 450, 120, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+		objects.add(new Enemy(0, 250, 690, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+		objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+
+		spawnCoins(4); 
+	}
+	
+	/**
+     * Checks if a proposed spawn location for a coin is safely distanced from all existing Item objects.
+     */
+    private boolean isSafeToSpawn(int newX, int newY, int newWidth, int newHeight) {
+        int newCenterX = newX + newWidth / 2;
+        int newCenterY = newY + newHeight / 2;
+        int minDistanceSquared = MIN_COIN_DISTANCE * MIN_COIN_DISTANCE;
+
+        for (GameObject obj : objects) {
+            if (obj instanceof Item) {
+                Item existingCoin = (Item) obj;
+                
+                int existingCenterX = existingCoin.xPosition + existingCoin.usedSprite.width / 2;
+                int existingCenterY = existingCoin.yPosition + existingCoin.usedSprite.height / 2;
+
+                int dx = newCenterX - existingCenterX;
+                int dy = newCenterY - existingCenterY;
+                double distanceSquared = (dx * dx) + (dy * dy);
+                
+                if (distanceSquared < minDistanceSquared) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+	
 	private void spawnCoins(int count) {
         if (platforms.isEmpty()) return;
 
@@ -70,37 +120,58 @@ public class Level extends JPanel{
 
         for (int i = 0; i < count; i++) {
             Platform parentPlatform = platforms.get(rand.nextInt(platforms.size()));
-            
-            int spawnX = parentPlatform.xPosition + rand.nextInt(parentPlatform.usedSprite.width - coinWidth);
-            int spawnY = parentPlatform.yPosition - coinHeight - rand.nextInt(30) - 55; 
-            
-            int range = 30; 
-            int velocity = 1;
+            int maxAttempts = 50;
+            boolean spawned = false;
 
-            Item coin = new Item(0, spawnX, spawnY, range, range, velocity * (rand.nextBoolean() ? 1 : -1), velocity * (rand.nextBoolean() ? 1 : -1), new String[]{""}, new Sprite[] {new Sprite(coinWidth, coinHeight, "itemTest.png")}, coinScore );
-            objects.add(coin);
+            for (int attempt = 0; attempt < maxAttempts; attempt++) {
+            
+	            int spawnX = parentPlatform.xPosition + rand.nextInt(parentPlatform.usedSprite.width - coinWidth);
+	            int spawnY = parentPlatform.yPosition - coinHeight - rand.nextInt(30) - 55; 
+	            
+	            int range = 30; 
+	            int velocity = 1;
+
+                if (isSafeToSpawn(spawnX, spawnY, coinWidth, coinHeight)) {
+                    Item coin = new Item(0, spawnX, spawnY, range, range, velocity * (rand.nextBoolean() ? 1 : -1), velocity * (rand.nextBoolean() ? 1 : -1), new String[]{""}, new Sprite[] {new Sprite(coinWidth, coinHeight, "itemTest.png")}, coinScore );
+                    objects.add(coin);
+                    spawned = true;
+                    break;
+                }
+            }
+            if (!spawned) {
+                // If a coin cannot be spawned in a safe location, it just skips it.
+            }
         }
     }
+	
 	private void respawnPlayer() {
-	    // Resets player position and full HP
 	    player.xPosition = SPAWN_X; 
-	    player.yPosition = SPAWN_Y; 
+	    player.yPosition = SPAWN_Y;
 	    player.hp = INITIAL_HP;
-	    
-	    
-        score = 0;
-        levelPassed = false; // Reset level goal status
+	    score = 0;
+		spawnCoins(4-getCoinCount()); 
+	}
+	public int getCoinCount() {
+		int count = 0;
+		for (GameObject obj : objects) {
+			if (obj instanceof Item) {
+				count++;
+			}
+		}
+		return count;
+	}
+	private void resetLevel() {
+		levelPassed = false;
+		score = 0;
+		initializeLevelObjects(); // Re-initialize all objects (enemies, platforms, coins)
+		respawnPlayer();
 	}
 
 	public void tick() {
 		 if (score >= requiredscore && !levelPassed) {
 	            levelPassed = true;
 	        }
-		if (player.hp <= 0) {
-            player.xPosition = 400; 
-            player.yPosition = 100; 
-            player.hp = 100;
-        }
+		
 		if (player.yPosition > Stage.HEIGHT) {
             respawnPlayer();
         }
@@ -110,6 +181,17 @@ public class Level extends JPanel{
 		if (player.isInvincible && System.currentTimeMillis() - pastTime >= iFrame) {
             player.isInvincible = false;
         }
+		
+		if (!levelPassed) {
+			handleInput();
+			player.onGround = false;
+			prevX = player.xPosition;
+			prevY = player.yPosition;
+			player.update();
+		} else if (pressedKeys.contains(KeyEvent.VK_N)) {
+			resetLevel();
+		}
+		
 		for (GameObject obj: objects) {
 			obj.update();
 		}
@@ -117,12 +199,10 @@ public class Level extends JPanel{
 			for (GameObject obj : toRemove) {
 				objects.remove(obj);
 			}
+            toRemove.clear();
 		}
-	    handleInput();
-		player.onGround = false;
-		prevX = player.xPosition;
-		prevY = player.yPosition;
-		player.update();
+		
+		
 		for (GameObject obj:objects) {
 			int leftmostPlayer = player.xPosition;
 			int rightmostPlayer = player.xPosition + player.usedSprite.width;
@@ -133,59 +213,44 @@ public class Level extends JPanel{
 			int rightmostObject = obj.xPosition + obj.usedSprite.width;
 			int topmostObject = obj.yPosition;
 			int bottommostObject = obj.yPosition + obj.usedSprite.height;
-			// the collision code was very annoying and not fun. probably cutting hit/hurtboxes (multiple) and just doing a single bounding box for everything. Note: remove hp from entity class if it has it, only give it to player.
-			// below code checks for overlapping in both dimensions. not sure why using javax' intersects() method doesn't work the same. seems like that returns true if they touch edges, but not sure why that affects the result.
+			
 			if ((rightmostPlayer > leftmostObject && leftmostPlayer < rightmostObject) && (bottommostPlayer > topmostObject && topmostPlayer < bottommostObject)) {
-//			if (player.usedSprite.boundingBox.intersects(obj.usedSprite.boundingBox)) { // NEED TO IMPLEMENT STUFF FOR ENEMIES/ITEMS THAT SHOULD NOT SHOVE THE PLAYER (JUST A SIMPLE CONDITIONAL CHECK FOR INTERACTABLE) THEN IF NOT INTERACTABLE HAVE OTHER CASES, OR SOMETHING. MAY WANT TOIMPLEMENT MULTIPLE COLLISION BOXES (BOTH HITBOXES AND HURTBOXES?)
 				if (obj instanceof Platform) {
-					Platform platform = (Platform) obj; // may not need this.
+					Platform platform = (Platform) obj;
 							player.xPosition+=platform.velocityX;
-					// will need a check in here for hurting platforms. consider doing something since we'll have similar stuff below for normal enemies etc.
 
-						// also only does collisions for the player, not enemy and platform/enemy and enemy/enemy and item/etc
-						// assumes one rectangle for both objects
-
-						// find overlaps
 						    int overlapRight = rightmostPlayer - leftmostObject;
 						    int overlapLeft = rightmostObject - leftmostPlayer;
 						    int overlapBottom = bottommostPlayer - topmostObject;
 						    int overlapTop = bottommostObject - topmostPlayer;
 						
-						    // for now, assume the smaller overlap value is the one that should be correct
 						    int minOverlapX = Math.min(overlapRight, overlapLeft);
 						    int minOverlapY = Math.min(overlapBottom, overlapTop);
 
-						    // corrects x-axis if it would displace less than correcting the y-axis
 						    if (minOverlapX < minOverlapY) {
-						    	// corrects by moving the player to the right if the right overlap is smaller than the left (similar to above)
 						        if (overlapRight < overlapLeft) {
-						        	player.xPosition -= overlapRight; // note: this is the same as saying minoverlapx. just better for readability, i guess.
+						        	player.xPosition -= overlapRight;
 						        } 
 						        else {
 						        	player.xPosition += overlapLeft;
 						        }
-						        player.velocityX = 0; // velocity is set to 0 to prevent possible unnecessary corrections next cycle and to simulate what would happen in real life
+						        player.velocityX = 0;
 						    } 
-						    // corrects y-axis
 						    else {
-						        // corrects by moving player up if the upwards displacement is smaller than the downwards
 						        if (overlapBottom < overlapTop) {
 						        	player.yPosition -= overlapBottom;
-						            player.onGround = true; // also sets onGround so the player can jump
+						            player.onGround = true;
 						        } 
 						        else {
 						        	player.yPosition += overlapTop;
 						        }
 						        player.velocityY = 0;
 						}
-
-//						// for damaging do a thing with a translucent background to make the screen part red. also maybe control the short iframes here.
-//					
+					
 				}
 				
 				else if (obj instanceof Enemy) {
-					Enemy enemy = (Enemy) obj; // may not need this.
-//					if (pressedKeys.contains(KeyEvent.VK_Q)) {
+					Enemy enemy = (Enemy) obj;
 						enemy.hitPlayer = true;
 						
 					    if (System.currentTimeMillis()-pastTime>=iFrame) {
@@ -195,17 +260,16 @@ public class Level extends JPanel{
 					    	    player.hp -= 20;
 					    	    player.isInvincible = true;
 					    		}
-							player.velocityX-=7; // update to have it work no matter what the collision direction is
+							player.velocityX-=7;
 
 					    }					
 				}
 				else if (obj instanceof Item) {
 					Item item = (Item) obj;
-					if (pressedKeys.contains(KeyEvent.VK_E))
+					if (pressedKeys.contains(KeyEvent.VK_E) && !levelPassed)
 					{
 						score += 20;
-						toRemove.add(obj); // maybe add a flag for respawning per level, where whenever an item is removed, another one spawns in (between a platform's top x and 10 pixels above, accounting for movement)
-						System.out.println("Coin Collected! New Score: " + score);
+						toRemove.add(obj);
 					}
 				}
 			}
@@ -220,7 +284,7 @@ public class Level extends JPanel{
 	    int accelX = 0;
 	    int accelY = 0;
 
-	    if (pressedKeys.contains(KeyEvent.VK_LEFT)) { // could try doing an interesting thing with afterimages possibly (or afterimages of eyes)
+	    if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
 	    	accelX -= 1;
 	    }
 	    if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
@@ -229,7 +293,7 @@ public class Level extends JPanel{
 	    if (accelX == 0) {
 	    }
 	    if ((pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_SPACE))&&player.onGround) {
-	    	accelY -= 13; // note: should be relatively high so that player immediately gains max vertical speed since we can only jump while touching a platform...?
+	    	accelY -= 13;
 	    }
 	    else {
 	    	accelY +=1;
@@ -271,16 +335,41 @@ protected void paintComponent(Graphics g) {
     
     // Draw Player HP (Top Left)
     g.setColor(Color.RED);
-    g.drawString("HP: " + player.hp + " / 100", 10, 20); // X=10, Y=20
+    g.drawString("HP: " + player.hp + " / 100", 10, 20); 
     
-    // Draw Score and Level Goal (Top Left, offset to the right of HP)
+    // Draw Score and Level Goal 
     g.setColor(Color.YELLOW);
     String scoreString = "SCORE: " + score + " / " + requiredscore;
     if (levelPassed) {
         scoreString += " - LEVEL COMPLETE!";
-        g.setColor(Color.GREEN); // Change color when goal is met
+        g.setColor(Color.GREEN);
     }
-    // Moved score to X=180, Y=20 to be on the same line as HP but clearly separate
     g.drawString(scoreString, 180, 20); 
+    
+    // Draw Level Complete Overlay
+    if (levelPassed) {
+    	Graphics2D g2 = (Graphics2D) g;
+    	
+        // Draw a semi-transparent black overlay
+        g.setColor(new Color(0, 0, 0, 150)); 
+        g.fillRect(0, 0, Stage.WIDTH, Stage.HEIGHT);
+
+        // Draw "LEVEL COMPLETE!"
+        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        g.setColor(Color.WHITE);
+        String completeText = "LEVEL COMPLETE!";
+        int textWidth = g.getFontMetrics().stringWidth(completeText);
+        int textX = (Stage.WIDTH - textWidth) / 2;
+        int textY = Stage.HEIGHT / 2 - 30;
+        g.drawString(completeText, textX, textY);
+
+        // Draw "Press 'N' to continue"
+        g2.setFont(new Font("Arial", Font.PLAIN, 24));
+        String instructionText = "Press 'N' to continue";
+        textWidth = g.getFontMetrics().stringWidth(instructionText);
+        textX = (Stage.WIDTH - textWidth) / 2;
+        textY = Stage.HEIGHT / 2 + 30;
+        g.drawString(instructionText, textX, textY);
+    }
 }
 }

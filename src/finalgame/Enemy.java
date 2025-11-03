@@ -5,10 +5,7 @@ import java.awt.Graphics2D;
 
 public class Enemy extends Entity{
 
-//	boolean specialMovement;///???? maybe? something using math random, where it changes based off a timer, but is more likely to go towards the player (or away from them). could also do specialenemy instead
-	
-	boolean hitPlayer = false; // partially used for testing. maybe we can keep it and make the sprite change to a bloody one.
-	
+	boolean hitPlayer = false;
 	
 	public Enemy(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
 		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
@@ -18,14 +15,40 @@ public class Enemy extends Entity{
 		super(id, xPosition, yPosition, spriteNames, sprites);
 	}
 	
+	@Override
+	public void update() {
+	    xPosition += velocityX;
+	    yPosition += velocityY;
+
+	    int enemyWidth = usedSprite.width;
+	    int enemyHeight = usedSprite.height;
+
+	    if (xPosition < 0) {
+	        xPosition = 0;
+	        velocityX = -velocityX; 
+	    } else if (xPosition + enemyWidth > Stage.WIDTH) {
+	        xPosition = Stage.WIDTH - enemyWidth;
+	        velocityX = -velocityX; 
+	    }
+
+	    if (yPosition < 0) {
+	        yPosition = 0;
+	        velocityY = -velocityY; 
+	    } else if (yPosition + enemyHeight > Stage.HEIGHT) {
+	    	yPosition = Stage.HEIGHT - enemyHeight; 
+	    	velocityY = -velocityY; 
+	    }
+	    
+	    if (velocityY > 110) {
+	    	velocityY = 110;
+	    }
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		if (usedSprite.spriteLoaded && !hitPlayer) {
-//			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null); // note: commenting this out doesn't make the enemy stop updating its position. 
 		}
 	}
-	
 }
