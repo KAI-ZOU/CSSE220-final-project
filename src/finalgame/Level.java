@@ -28,7 +28,7 @@ public class Level extends JPanel{
 	ArrayList<GameObject> toRemove = new ArrayList<>();
 	
 	long pastTime = System.currentTimeMillis();
-	long iFrame = 300;
+	long iFrame = 1000;
 	
 	public Level() { 
 		
@@ -57,6 +57,14 @@ public class Level extends JPanel{
 	}
 	
 	public void tick() {
+		if (player.hp <= 0) {
+            player.xPosition = 400; 
+            player.yPosition = 100; 
+            player.hp = 100;
+        }
+		if (player.isInvincible && System.currentTimeMillis() - pastTime >= iFrame) {
+            player.isInvincible = false;
+        }
 		for (GameObject obj: objects) {
 			obj.update();
 		}
@@ -138,6 +146,10 @@ public class Level extends JPanel{
 					    if (System.currentTimeMillis()-pastTime>=iFrame) {
 					    	enemy.hitPlayer = true;
 					    	pastTime = System.currentTimeMillis();
+					    	if (player.hp > 0) { 
+					    	    player.hp -= 20;
+					    	    player.isInvincible = true;
+					    		}
 							player.velocityX-=7; // update to have it work no matter what the collision direction is
 
 					    }					
@@ -210,5 +222,7 @@ private void buildKeys() {
 			obj.paintComponent(g);
 		}
 		player.paintComponent(g);
+		g.setColor(Color.RED);
+        g.drawString("HP: " + player.hp + " / 100", 10, 20);
 	}
 }

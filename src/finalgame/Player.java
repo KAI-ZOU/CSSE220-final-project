@@ -14,6 +14,7 @@ public class Player extends Entity{
 //	boolean dash;
 //	boolean collectPowersUp; // this and the above 3 were intended to be implemented as permanentupgrades for completing levels. probably will not do any. if one, feather fall. simple if space is pressed and you'd otherwise fall, decrease downward acceleration
 	boolean onGround = false;
+	public boolean isInvincible = false;
 	
 	// make a matrix (4x3) for player movement (up, left up, etc)
 	// make a corresponding matrix for sprite names
@@ -21,6 +22,7 @@ public class Player extends Entity{
 	
 	public Player(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
 		super(id, xPosition, yPosition, spriteNames, sprites);
+		this.hp = 100;
 	}
 	
 	public void applyAcceleration(int accelX, int accelY) { // CONSIDER APPLYING ACCELERATION TO AUTOMATIC ENEMY MOVEMENT? IT WOULD BE HARD SINCE YOU'D HAVE TO EITHER KNOW WHEN TO SLOW DOWN BEFORE REACHING THE BOUND OR ACCOUNT FOR GOING PAST THE BOUND DUE TO ACCELERATION
@@ -78,6 +80,16 @@ public class Player extends Entity{
 //		else if () {
 //			
 //		}
+	}
+	@Override
+	protected void paintComponent(Graphics g) {
+        // Only draw the sprite if the player is NOT invincible OR 
+        // if they are invincible but the flicker timer allows drawing.
+        // The expression (System.currentTimeMillis() % 200 > 100) causes the sprite to be visible for 100ms
+        // and hidden for 100ms, creating a visible flicker.
+        if (!isInvincible || (System.currentTimeMillis() % 200 > 100)) { 
+            super.paintComponent(g); // Draws the sprite via GameObject's logic
+        }
 	}
 
 }
