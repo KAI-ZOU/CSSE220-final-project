@@ -395,23 +395,26 @@ protected void paintComponent(Graphics g) {
 	}
     
     if (!gameFinished) {
-	    g.setColor(Color.RED);
+    	Font hudFont = new Font("Arial", Font.PLAIN, 20); 
+        g.setFont(hudFont); 
+        
+	    g.setColor(Color.BLACK);
 	    g.drawString("HP: " + player.hp + " / 100", 10, 20); 
 	    
-	    g.setColor(Color.YELLOW);
+	    g.setColor(Color.BLACK);
 	    String scoreString = "SCORE: " + score + " / " + requiredscore;
 	    if (levelPassed) {
 	        scoreString += " - LEVEL COMPLETE!";
-	        g.setColor(Color.GREEN);
+	        g.setColor(Color.BLACK);
 	    }
-	    g.drawString(scoreString, 180, 20); 
+	    g.drawString(scoreString, 10, 50); 
 	    
-	    g.setColor(Color.CYAN);
+	    g.setColor(Color.BLACK);
 	    String coinCountString = "COINS LEFT: " + getCoinCount();
-	    g.drawString(coinCountString, 450, 20);
+	    g.drawString(coinCountString, 10, 80);
 	    
-	    g.setColor(Color.WHITE);
-	    g.drawString("LEVEL " + currentLevel, Stage.WIDTH - 80, 20);
+	    g.setColor(Color.BLACK);
+	    g.drawString("LEVEL " + currentLevel, Stage.WIDTH - 90, 20);
     }
     
     if (levelPassed) {
