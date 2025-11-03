@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -16,11 +17,14 @@ public class Level extends JPanel{
 	Timer timer;
 	ArrayList<GameObject> objects = new ArrayList<>();
 	Player player;
-	int requiredscore; // score needed to pass a level
-	
+	private int requiredscore = 60;
+	private int score = 0;
+	private boolean levelPassed = false;
 	Stage stage = new Stage("sceneTest.png");
-	
-	
+	private final int SPAWN_X = 400;
+    private final int SPAWN_Y = 100;
+    private final int INITIAL_HP = 100;
+    private ArrayList<Platform> platforms = new ArrayList<>();
 	
 	private final Set<Integer> pressedKeys = new HashSet<>(); // 
 	int prevX;
@@ -36,7 +40,7 @@ public class Level extends JPanel{
 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
-		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}));
+		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}, score));
 		objects.add(new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 		objects.add(new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
@@ -48,6 +52,7 @@ public class Level extends JPanel{
 		objects.add(new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
 		objects.add(new Enemy(0, 450, 120, 100, 20, 2, 1, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+		spawnCoins(3); 
 		repaint();
 		
 		
@@ -55,12 +60,52 @@ public class Level extends JPanel{
 		timer.start();
 		buildKeys();
 	}
-	
+	private void spawnCoins(int count) {
+        if (platforms.isEmpty()) return;
+
+        Random rand = new Random();
+        int coinWidth = 30; 
+        int coinHeight = 30; 
+        int coinScore = 20;
+
+        for (int i = 0; i < count; i++) {
+            Platform parentPlatform = platforms.get(rand.nextInt(platforms.size()));
+            
+            int spawnX = parentPlatform.xPosition + rand.nextInt(parentPlatform.usedSprite.width - coinWidth);
+            int spawnY = parentPlatform.yPosition - coinHeight - rand.nextInt(30) - 55; 
+            
+            int range = 30; 
+            int velocity = 1;
+
+            Item coin = new Item(0, spawnX, spawnY, range, range, velocity * (rand.nextBoolean() ? 1 : -1), velocity * (rand.nextBoolean() ? 1 : -1), new String[]{""}, new Sprite[] {new Sprite(coinWidth, coinHeight, "itemTest.png")}, coinScore );
+            objects.add(coin);
+        }
+    }
+	private void respawnPlayer() {
+	    // Resets player position and full HP
+	    player.xPosition = SPAWN_X; 
+	    player.yPosition = SPAWN_Y; 
+	    player.hp = INITIAL_HP;
+	    
+	    
+        score = 0;
+        levelPassed = false; // Reset level goal status
+	}
+
 	public void tick() {
+		 if (score >= requiredscore && !levelPassed) {
+	            levelPassed = true;
+	        }
 		if (player.hp <= 0) {
             player.xPosition = 400; 
             player.yPosition = 100; 
             player.hp = 100;
+        }
+		if (player.yPosition > Stage.HEIGHT) {
+            respawnPlayer();
+        }
+		if (player.hp <= 0) {
+            respawnPlayer();
         }
 		if (player.isInvincible && System.currentTimeMillis() - pastTime >= iFrame) {
             player.isInvincible = false;
@@ -156,9 +201,11 @@ public class Level extends JPanel{
 				}
 				else if (obj instanceof Item) {
 					Item item = (Item) obj;
-					if (pressedKeys.contains(KeyEvent.VK_E)) {
+					if (pressedKeys.contains(KeyEvent.VK_E))
+					{
+						score += 20;
 						toRemove.add(obj); // maybe add a flag for respawning per level, where whenever an item is removed, another one spawns in (between a platform's top x and 10 pixels above, accounting for movement)
-
+						System.out.println("Coin Collected! New Score: " + score);
 					}
 				}
 			}
@@ -212,17 +259,28 @@ private void buildKeys() {
 
 	
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-//		Graphics2D g2 = (Graphics2D) g;
-		
-		stage.paintComponent(g);
-		for (GameObject obj : objects) {
-			obj.paintComponent(g);
-		}
-		player.paintComponent(g);
-		g.setColor(Color.RED);
-        g.drawString("HP: " + player.hp + " / 100", 10, 20);
+@Override
+protected void paintComponent(Graphics g) {
+	super.paintComponent(g);
+	
+	stage.paintComponent(g);
+	for (GameObject obj : objects) {
+		obj.paintComponent(g);
 	}
+	player.paintComponent(g);
+    
+    // Draw Player HP (Top Left)
+    g.setColor(Color.RED);
+    g.drawString("HP: " + player.hp + " / 100", 10, 20); // X=10, Y=20
+    
+    // Draw Score and Level Goal (Top Left, offset to the right of HP)
+    g.setColor(Color.YELLOW);
+    String scoreString = "SCORE: " + score + " / " + requiredscore;
+    if (levelPassed) {
+        scoreString += " - LEVEL COMPLETE!";
+        g.setColor(Color.GREEN); // Change color when goal is met
+    }
+    // Moved score to X=180, Y=20 to be on the same line as HP but clearly separate
+    g.drawString(scoreString, 180, 20); 
+}
 }

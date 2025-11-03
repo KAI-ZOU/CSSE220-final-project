@@ -13,8 +13,9 @@ public class Item extends GameObject{
 	}
 	
 
-	public Item(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
+	public Item(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites,  int scoreGiven) {
 		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
+		this.scoreGiven = scoreGiven;
 	}
 	
 	@Override
