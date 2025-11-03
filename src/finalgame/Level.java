@@ -42,6 +42,9 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 	
 	long pastTime = System.currentTimeMillis();
 	long iFrame = 300;
+//	String prevVelXDir = "STILL";
+//	String prevVelYDir = "DOWN";
+
 	
 	
 	// add or remove objects from view
@@ -60,7 +63,7 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 		this.setBackground(Color.BLACK);
 //		this.add(stage);
 		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}));
-		objects.add(new Platform(0, 200, 240, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
+		objects.add(new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 		objects.add(new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
 		objects.add(new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
@@ -112,6 +115,7 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 //			if (player.usedSprite.boundingBox.intersects(obj.usedSprite.boundingBox)) { // NEED TO IMPLEMENT STUFF FOR ENEMIES/ITEMS THAT SHOULD NOT SHOVE THE PLAYER (JUST A SIMPLE CONDITIONAL CHECK FOR INTERACTABLE) THEN IF NOT INTERACTABLE HAVE OTHER CASES, OR SOMETHING. MAY WANT TOIMPLEMENT MULTIPLE COLLISION BOXES (BOTH HITBOXES AND HURTBOXES?)
 				if (obj instanceof Platform) {
 					Platform platform = (Platform) obj; // may not need this.
+							player.xPosition+=platform.velocityX;
 					// will need a check in here for hurting platforms. consider doing something since we'll have similar stuff below for normal enemies etc.
 
 						// also only does collisions for the player, not enemy and platform/enemy and enemy/enemy and item/etc
@@ -150,6 +154,7 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 						        }
 						        player.velocityY = 0;
 						}
+
 //						// for damaging do a thing with a translucent background to make the screen part red. also maybe control the short iframes here.
 //					
 				}
@@ -162,7 +167,21 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 					    if (System.currentTimeMillis()-pastTime>=iFrame) {
 					    	enemy.hitPlayer = true;
 					    	pastTime = System.currentTimeMillis();
+//							switch (prevVelXDir) {
+//							case "LEFT":
+//								player.velocityX+=7;
+//								break;
+//							case "RIGHT":
+//								player.velocityX-=7;
+//								break;
+//							case "STILL":
+//								break;
+//							default:
 							player.velocityX-=7; // update to have it work no matter what the collision direction is
+//							}
+//							switch (prevVelYDir) {
+//							case "UP"
+//							}
 
 					    }					
 //					else {
@@ -193,15 +212,22 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 
 	    if (pressedKeys.contains(KeyEvent.VK_LEFT)) { // could try doing an interesting thing with afterimages possibly (or afterimages of eyes)
 	    	accelX -= 1;
+//	    	prevVelXDir = "LEFT";
 	    }
 	    if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
 	    	accelX += 1;
+//	    	prevVelXDir = "RIGHT";
+	    }
+	    if (accelX == 0) {
+//	    	prevVelXDir = "STILL";
 	    }
 	    if ((pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_SPACE))&&player.onGround) {
 	    	accelY -= 13; // note: should be relatively high so that player immediately gains max vertical speed since we can only jump while touching a platform...?
+//	    	prevVelYDir = "UP";
 	    }
 	    else {
 	    	accelY +=1;
+//	    	prevVelYDir = "DOWN";
 	    }
 
 	    player.applyAcceleration(accelX, accelY);

@@ -45,6 +45,8 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 		this.id = id;
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
+		velocityX = 0;
+		velocityY = 0;
 		
 		usedSprite = sprites[0];
 //		for (int i = 0; i < spriteNames) { // TECHNICALLY SHOULD CHECK FOR NAMES AND SPRITES BEING SAME LENGTH
