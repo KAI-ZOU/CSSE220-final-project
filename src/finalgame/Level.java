@@ -1,33 +1,20 @@
 package finalgame;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.management.openmbean.KeyAlreadyExistsException;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-// NEED TO FIGURE OUT WHREWE TO CALL REPAINT();
 
 
-public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist and keylist
-//	MovementManager movementManager = new MovementManager(); // maybe we feed the movement manager objects (in method not global), and it can act on those internally.
-//	InputManager inputManager = new InputManager();
+public class Level extends JPanel{
 	Timer timer;
-	// those objects are the components.
-	ArrayList<GameObject> objects = new ArrayList<>();// maybe we should have one for each classe. // change to gameobjects
+	ArrayList<GameObject> objects = new ArrayList<>();
 	Player player;
 	int requiredscore; // score needed to pass a level
 	
@@ -42,26 +29,13 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 	
 	long pastTime = System.currentTimeMillis();
 	long iFrame = 300;
-//	String prevVelXDir = "STILL";
-//	String prevVelYDir = "DOWN";
-
-	
-	
-	// add or remove objects from view
-	// update objects' movement
 	
 	public Level() { 
 		
 		player = new Player(0, 300, 50, new String[]{""}, new Sprite[] {new Sprite(30, 30, "playerTest.png")});
-//		
-//		this.setLayout(new BorderLayout()); // figure out what parameters to use if we want them later
-//		this.add(stage, BorderLayout.CENTER);
-//		this.add(stage);
-//        this.setBackground(stage.testingColor);
 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
-//		this.add(stage);
 		objects.add(new Item(0, 300, 100,0,100, 0, 1, new String[]{""}, new Sprite[] {new Sprite(30, 30, "itemTest.png")}));
 		objects.add(new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 		objects.add(new Platform(0, 300, 270, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
@@ -74,11 +48,8 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 		objects.add(new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "tennis.png")}));
 
 		objects.add(new Enemy(0, 450, 120, 100, 20, 2, 1, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
-//		objects.get(2).update();
 		repaint();
 		
-//		timer = new Timer(30, e -> tick());
-//		timer.start();
 		
 		timer = new Timer(16, e-> tick());
 		timer.start();
@@ -167,33 +138,13 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 					    if (System.currentTimeMillis()-pastTime>=iFrame) {
 					    	enemy.hitPlayer = true;
 					    	pastTime = System.currentTimeMillis();
-//							switch (prevVelXDir) {
-//							case "LEFT":
-//								player.velocityX+=7;
-//								break;
-//							case "RIGHT":
-//								player.velocityX-=7;
-//								break;
-//							case "STILL":
-//								break;
-//							default:
 							player.velocityX-=7; // update to have it work no matter what the collision direction is
-//							}
-//							switch (prevVelYDir) {
-//							case "UP"
-//							}
 
 					    }					
-//					else {
-//						enemy.hitPlayer = false;
-//					}
-//					enemy.hitPlayer = true;
 				}
 				else if (obj instanceof Item) {
 					Item item = (Item) obj;
 					if (pressedKeys.contains(KeyEvent.VK_E)) {
-						item.collected = true;
-//						objects.remove(obj); // does not work. crashes game (modifying arraylist as we iterate).
 						toRemove.add(obj); // maybe add a flag for respawning per level, where whenever an item is removed, another one spawns in (between a platform's top x and 10 pixels above, accounting for movement)
 
 					}
@@ -212,22 +163,17 @@ public class Level extends JPanel{ // is a jpanel(?) // maybe change actionlist 
 
 	    if (pressedKeys.contains(KeyEvent.VK_LEFT)) { // could try doing an interesting thing with afterimages possibly (or afterimages of eyes)
 	    	accelX -= 1;
-//	    	prevVelXDir = "LEFT";
 	    }
 	    if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
 	    	accelX += 1;
-//	    	prevVelXDir = "RIGHT";
 	    }
 	    if (accelX == 0) {
-//	    	prevVelXDir = "STILL";
 	    }
 	    if ((pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_SPACE))&&player.onGround) {
 	    	accelY -= 13; // note: should be relatively high so that player immediately gains max vertical speed since we can only jump while touching a platform...?
-//	    	prevVelYDir = "UP";
 	    }
 	    else {
 	    	accelY +=1;
-//	    	prevVelYDir = "DOWN";
 	    }
 
 	    player.applyAcceleration(accelX, accelY);

@@ -24,8 +24,6 @@ public class Sprite {
 		this.width = width;
 		this.height = height;
 		boundingBox = new Rectangle(width, height);
-		
-
         try {
 			image = ImageIO.read(Sprite.class.getResource(filePath));
 			spriteLoaded= true;
@@ -33,25 +31,6 @@ public class Sprite {
 			// TODO Auto-generated catch block
 			spriteLoaded = false;
 //			e.printStackTrace();
-		}
-		
-		
+		}	
 	}
-	
-	// most recent: not using paintcomponent from sprite anymore
-	// maybe add paintcomponent (replaces draw
-	
-//	public void paintComponent (Graphics g2, int x, int y) {
-//		if (spriteLoaded) {
-//    		g2.drawImage(image, x, y, width, height, null);
-//    	}
-//    	else {
-////        g2.setColor(Color.BLACK);
-////        g2.fillOval(x, drawY, size, size);
-////    		 there really just... shouldn't be an else
-//    	}
-//	}
-
-	// a bounding box (general)
-	// a bounding box (specific)
 }

@@ -6,24 +6,12 @@ import java.util.HashMap;
 
 import javax.swing.JComponent;
 
-public abstract class GameObject extends JComponent{ // is a component of the panel
-	// bounding box
-	// collision box
-	// getupperboundx
-	// the other three
-	// state: collisiontype
-	// autocollide
-	// autocollide (damage)
-	// interactcollide
+public abstract class GameObject extends JComponent{
 	public HashMap<String, Sprite> sprites = new HashMap<>();
-//	public Sprite usedSprite = new Sprite(100, 100, 10, 10, "tennis.png");
 	public Sprite usedSprite;
 	public int xPosition, yPosition;
 	public int id; // don't really know that we need this? seems like we might not
-	public String spriteName = "DEFAULT";
-	// never mind. seems like collisiontype isn't needed.
-	public String collisionType; // whether the object has a solid collision (effects movement) or not. may change to a case-like thing for solid, interactable, or damaging. could just be a string where we check the value with conditionals. probably will do thatr.
-	int initialXPosition;
+	public String spriteName = "DEFAULT";int initialXPosition;
 	int initialYPosition;
 	int velocityX;
 	int velocityY;
@@ -59,14 +47,6 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 		this.usedSprite = sprites.get(spriteName);
 	}
 	
-	public void updatePosition() {
-		// gaaaaah. maybe add vel
-	}
-	
-	public void getbounds() {// may use something like this, may just use sprite direct
-		// returns an array of 4;
-	}
-	
 	public void update() {
 		// logic for automatic movement based off the given movement range. be careful of inputting velocity values in the constructor with the wrong signs.
 		if (xPosition <= initialXPosition) {
@@ -94,8 +74,5 @@ public abstract class GameObject extends JComponent{ // is a component of the pa
 		if (usedSprite.spriteLoaded) {
 			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null);
 		}
-//		usedSprite.paintComponent(g, xPosition, yPosition);
 	}
-	
-//	public abstract void draw();
 }

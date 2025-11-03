@@ -24,12 +24,8 @@ public class Enemy extends Entity{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		if (usedSprite.spriteLoaded && !hitPlayer) {
-			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null);
+//			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null); // note: commenting this out doesn't make the enemy stop updating its position. 
 		}
-		else if (hitPlayer) {
-			g2.drawRect(400, 70, 100, 100); // used as flag
-		}
-//		usedSprite.paintComponent(g, xPosition, yPosition);
 	}
 	
 }

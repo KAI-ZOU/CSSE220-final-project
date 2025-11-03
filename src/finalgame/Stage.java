@@ -17,15 +17,9 @@ public class Stage extends JComponent{
 	
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
-//	public int WIDTH = 700;
-//	public int HEIGHT = 300;
-//	public final Color testingColor = Color.DARK_GRAY;
 
 	public BufferedImage image;
 	private boolean spriteLoaded = false;
-	
-//	public final int x1 = 0;
- // the background for the level.
 	
 	public Stage(String filePath) {
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
