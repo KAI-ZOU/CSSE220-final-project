@@ -474,9 +474,6 @@ public class Level extends JPanel{
 	    if ((pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_SPACE))&&player.onGround) {
 	    	accelY -= 13;
 	    }
-	    else if (player.onGround) {
-	    	
-	    }
 	    else {
 	    	accelY +=1;
 	    }
