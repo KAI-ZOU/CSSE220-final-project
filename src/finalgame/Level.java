@@ -30,14 +30,22 @@ public class Level extends JPanel{
     private final int SPAWN_Y = 100;
     private final int INITIAL_HP = 100;
     private ArrayList<Platform> platforms = new ArrayList<>();
-	long start, start2, start3;
+	long levelStartTime;
+	private long timeElapsedL1 = -1;
+	private long timeElapsedL2 = -1;
+	private long timeElapsedL3 = -1;
+	
+	private final long STAR_3_LIMIT_MS = 15000;
+	private final long STAR_2_LIMIT_MS = 25000;
+	private final long STAR_1_LIMIT_MS = 60000;
+
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	int prevX;
 	int prevY;
 	ArrayList<GameObject> toRemove = new ArrayList<>();
 	
 	long pastTime = System.currentTimeMillis();
-	long iFrame = 1000;
+	long iFrame = 1500;
 	
 	private static final int MIN_COIN_DISTANCE = 40;
 	private static final int COIN_POINT_VALUE = 20; 
@@ -67,24 +75,32 @@ public class Level extends JPanel{
         player.yPosition = SPAWN_Y;
 		
         int coinCount = 0;
+        
+        levelStartTime = System.currentTimeMillis();
+
 		
         if (level == 1) {
             requiredscore = 80; 
             coinCount = 4;
-            start = System.currentTimeMillis();
+            
+            // Define the platforms that coins are allowed to spawn on (the main, visible platforms)
+            ArrayList<Platform> mainPlatforms = new ArrayList<>();
+            
             Platform p1 = new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
-            Platform p2 = new Platform(0, 300, 270, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
+            //Platform p2 = new Platform(0, 300, 270, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p3 = new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p4 = new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "BrickPlatform.png")});
             Platform p5 = new Platform(0, 700, 400, 0, 120, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p6 = new Platform(0, 450, 340, 0, 60, 0, 1, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
-            
+
             platforms.add(p1);
-            platforms.add(p2);
+            //platforms.add(p2);
             platforms.add(p3);
             platforms.add(p4);
             platforms.add(p5);
             platforms.add(p6);
+            
+            mainPlatforms.addAll(platforms); 
             
             objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
@@ -97,79 +113,64 @@ public class Level extends JPanel{
             objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
 
-            objects.add(new Enemy(0, 550, 800, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
-            objects.add(new Enemy(0, 950, 500, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
-            platforms.add(new Platform(0, 550, 950, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "Blank-PNG-Pic.png")}));
-            
-            objects.add(new Enemy(0, 550, 800, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
-            objects.add(new Enemy(0, 950, 500, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
-            platforms.add(new Platform(0, 550, 950, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "Blank-PNG-Pic.png")}));
-            spawnCoins(coinCount);
+            spawnCoins(coinCount, mainPlatforms);
 
         } else if (level == 2) {
             requiredscore = 100; 
             coinCount = 5;
-            start2 = System.currentTimeMillis();
             
             platforms.add(new Platform(0, 100, 600, 800, 50, 0, 0, new String[]{""}, new Sprite[] {new Sprite(800, 50, "BrickPlatform.png")}));
             
-            platforms.add(new Platform(0, 50, 400, 350, 0, 2, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
+            platforms.add(new Platform(0, 50, 150, 350, 0, 2, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
             
-            platforms.add(new Platform(0, 600, 400, 200, 15, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
+            platforms.add(new Platform(0, 600, 320, 200, 15, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
             
-            platforms.add(new Platform(0, 200, 350, 150, 0, 3, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
-            platforms.add(new Platform(0, 200, 250, 150, 0, 3, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
+            platforms.add(new Platform(0, 200, 300, 150, 0, 3, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
             
-            platforms.add(new Platform(0, 800, 425, 0, 175, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
+            platforms.add(new Platform(0, 450, 250, 150, 0, 3, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
             
-
+            platforms.add(new Platform(0, 800, 375, 0, 200, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
 
             objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 450, 200, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+            objects.add(new Enemy(0, 450, 200, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             
-        
-//            public Enemy(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
-//        		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
-//        	}
-//            public Platform(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
-//        		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
-//        	}
-            spawnCoins(coinCount);
+            spawnCoins(coinCount, platforms);
 
         }  
 		else if (level == 3) {
 			requiredscore = 200;
 			coinCount = 10;
-            start3 = System.currentTimeMillis();
-
 			platforms.add(new Platform(0, 100, 600, 800, 50, 0, 0, new String[] { "" },
 					new Sprite[] { new Sprite(800, 50, "BrickPlatform.png") }));
 
 			platforms.add(new Platform(0, 50, 550, 350, 0, 2, 0, new String[] { "" },
 					new Sprite[] { new Sprite(200, 15, "BrickPlatform.png") }));
 
-			platforms.add(new Platform(0, 200, 350, 150, 0, 3, 0, new String[] { "" },
+			platforms.add(new Platform(0, 200, 450, 250, 0, 3, 0, new String[] { "" },
 					new Sprite[] { new Sprite(150, 15, "BrickPlatform.png") }));
+
+            platforms.add(new Platform(0, 600, 500, 200, 15, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
 
 			objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[] { "" },
 					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[] { "" },
+			objects.add(new Enemy(0, 700, 600, 100, 100, 5, 5, new String[] { "" },
 					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
 			objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[] { "" },
 					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 450, 545, 100, 100, 5, 5, new String[] { "" },
+			objects.add(new Enemy(0, 450, 300, 100, 100, 5, 5, new String[] { "" },
 					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 300, 545, 100, 100, 5, 5, new String[] { "" },
+			objects.add(new Enemy(0, 300, 400, 100, 100, 5, 5, new String[] { "" },
 					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
 			objects.add(new Enemy(0, 200, 300, 100, 100, 8, 8, new String[] { "" },
 					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-	        spawnCoins(coinCount);
+	        spawnCoins(coinCount, platforms);
+	        
 
 		}
         else {  
@@ -184,7 +185,6 @@ public class Level extends JPanel{
 	    currentLevel++;
 	    if (currentLevel > 3) { 
 	        gameFinished = true;
-//	        timer.stop(); 
 	        levelPassed = false;
 	        } else if(getCoinCount() == 0){
 	        levelPassed = false;
@@ -217,39 +217,47 @@ public class Level extends JPanel{
         return true;
     }
 	
-	private void spawnCoins(int count) {
-        if (platforms.isEmpty()) return;
-
+	private void spawnCoins(int count, ArrayList<Platform> spawnPlatforms) {
+        if (spawnPlatforms.isEmpty()) return;
+        
         Random rand = new Random();
         int coinWidth = 30; 
         int coinHeight = 30; 
         int coinScore = COIN_POINT_VALUE;
-
+        
         for (int i = 0; i < count; i++) {
-            Platform parentPlatform = platforms.get(rand.nextInt(platforms.size()));
-            int maxAttempts = 50;
-            boolean spawned = false;
-
-            for (int attempt = 0; attempt < maxAttempts; attempt++) {
+            boolean successfullySpawned = false;
+            int maxAttempts = 15;
+            int attempts = 0;
             
-	            int spawnX = parentPlatform.xPosition + rand.nextInt(parentPlatform.usedSprite.width - coinWidth);
-	            int spawnY = parentPlatform.yPosition - coinHeight - rand.nextInt(30) - 55; 
-	            
-	            int range = 30; 
-	            int velocity = 1;
+            while (!successfullySpawned && attempts < maxAttempts) {
+                attempts++;
+                
+                Platform parentPlatform = spawnPlatforms.get(rand.nextInt(spawnPlatforms.size()));
+                
+                int maxSpawnRange = parentPlatform.usedSprite.width - coinWidth;
+                if (maxSpawnRange < 0) maxSpawnRange = 0; 
+
+                int spawnX = parentPlatform.xPosition;
+                if (maxSpawnRange > 0) {
+                    spawnX += rand.nextInt(maxSpawnRange);
+                }
+                
+                int spawnY = parentPlatform.yPosition - coinHeight; 
+                    
+                int range = 30; 
+                int velocity = 1;
 
                 if (isSafeToSpawn(spawnX, spawnY, coinWidth, coinHeight)) {
-                    Item coin = new Item(0, spawnX, spawnY, range, range, velocity * (rand.nextBoolean() ? 1 : -1), velocity * (rand.nextBoolean() ? 1 : -1), new String[]{""}, new Sprite[] {new Sprite(coinWidth, coinHeight, "itemTest.png")}, coinScore );
+                    Item coin = new Item(0, spawnX, spawnY, range, range, 0, 0, new String[]{""}, new Sprite[] {new Sprite(coinWidth, coinHeight, "itemTest.png")}, coinScore );
                     objects.add(coin);
-                    spawned = true;
-                    break;
+                    successfullySpawned = true; 
                 }
             }
-            if (!spawned) {
-                
-            }
+            
         }
     }
+   
 	
 	public int getCoinCount() {
 		int count = 0;
@@ -260,15 +268,64 @@ public class Level extends JPanel{
 		}
 		return count;
 	}
+	private void recordLevelTime() {
+	    long timeTaken = System.currentTimeMillis() - levelStartTime;
+	    if (currentLevel == 1) {
+	        timeElapsedL1 = timeTaken;
+	    } else if (currentLevel == 2) {
+	        timeElapsedL2 = timeTaken;
+	    } else if (currentLevel == 3) {
+	        timeElapsedL3 = timeTaken;
+	    }
+	}
+	private long getCurrentLevelTime() {
+		if (levelPassed) {
+			if (currentLevel == 1) return timeElapsedL1;
+			if (currentLevel == 2) return timeElapsedL2;
+			if (currentLevel == 3) return timeElapsedL3;
+			return 0;
+		}
+		return System.currentTimeMillis() - levelStartTime;
+	}
+
+	private String formatTime(long timeMs) {
+	    if (timeMs<0) {
+	        return "Completed";
+	    }
+	    
+	    long totalSeconds = timeMs/ 1000;
+	    long minutes = totalSeconds/ 60;
+	    long seconds = totalSeconds% 60;
+	    long milliseconds = timeMs% 1000;
+	    return String.format("%d:%02d.%03d", minutes, seconds, milliseconds);
+	}
 	
-//	private void restartLevel() {
-//		levelPassed = false;
-//		score = 0; 
-//		loadLevel(currentLevel); 
-//	}
+	private int getStars(long timeMs) {
+	    if (timeMs < 0) return 0;
+	    if (timeMs <= STAR_3_LIMIT_MS) return 3;
+	    if (timeMs <= STAR_2_LIMIT_MS) return 2;
+	    if (timeMs <= STAR_1_LIMIT_MS) return 1;
+	    return 0;
+	}
+	
+	private String getStarString(int stars) {
+	    String star = "⭐";
+	    String emptyStar = "☆";
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < 3; i++) {
+	        if (i < stars) {
+	            sb.append(star);
+	        } else {
+	            sb.append(emptyStar);
+	        }
+	    }
+	    return sb.toString();
+	}
+
 
 	public void tick() {
-		if (!gameFinished && score >= requiredscore && !levelPassed) {
+		if (!gameFinished && getCoinCount() == 0 && !levelPassed) {
+				recordLevelTime();
 	            levelPassed = true;
 	    }
 		
@@ -276,7 +333,7 @@ public class Level extends JPanel{
 		boolean fellToDeath = player.yPosition > Stage.HEIGHT;
 		
 		if ((fellToDeath || player.hp <= 0) && !levelPassed && !gameFinished) {
-            //restartLevel(); Player will get a need to try again screen
+			timer.stop(); 
             repaint(); 
             return; 
         }
@@ -386,10 +443,10 @@ public class Level extends JPanel{
 				}
 				else if (obj instanceof Item) {
 					Item item = (Item) obj;
-					if (pressedKeys.contains(KeyEvent.VK_E) && !levelPassed)
+					if (pressedKeys.contains(KeyEvent.VK_DOWN) && !levelPassed)
 					{
 						score += COIN_POINT_VALUE;
-						toRemove.add(obj); // directly removing from the arraylist causes issues due to modification during iteration
+						toRemove.add(obj);
 					}
 				}
 			}
@@ -490,7 +547,6 @@ protected void paintComponent(Graphics g) {
 	    g.drawString("HP: " + player.hp + " / 100", 10, 20); 
 	    
 	    g.setColor(Color.BLACK);
-	    String scoreString = "SCORE: " + score;
 	    g.setColor(Color.WHITE);
 	    String scoreString1 = "SCORE: " + score;
 	    if (levelPassed) {
@@ -505,6 +561,9 @@ protected void paintComponent(Graphics g) {
 	    
 	    g.setColor(Color.WHITE);
 	    g.drawString("LEVEL " + currentLevel, Stage.WIDTH - 90, 20);
+	    
+	    String timerString = "TIME: " + formatTime(getCurrentLevelTime());
+	    g.drawString(timerString, Stage.WIDTH - 150, 50);
     }
     
     if (levelPassed) {
@@ -518,14 +577,34 @@ protected void paintComponent(Graphics g) {
         String completeText = "LEVEL COMPLETE!";
         int textWidth = g.getFontMetrics().stringWidth(completeText);
         int textX = (Stage.WIDTH - textWidth) / 2;
-        int textY = Stage.HEIGHT / 2 - 30;
+        int textY = Stage.HEIGHT / 2 - 80;
         g.drawString(completeText, textX, textY);
+        
+        long timeForStars = getCurrentLevelTime();
+        int stars = getStars(timeForStars);
+        String starString = getStarString(stars);
+        
+        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        g.setColor(Color.YELLOW);
+        textWidth = g.getFontMetrics().stringWidth(starString);
+        textX = (Stage.WIDTH - textWidth) / 2;
+        textY = Stage.HEIGHT / 2;
+        g.drawString(starString, textX, textY);
+        
+        g2.setFont(new Font("Arial", Font.PLAIN, 24));
+        g.setColor(Color.WHITE);
+        String timeString = "Time: " + formatTime(timeForStars);
+        textWidth = g.getFontMetrics().stringWidth(timeString);
+        textX = (Stage.WIDTH - textWidth) / 2;
+        textY = Stage.HEIGHT / 2 + 50;
+        g.drawString(timeString, textX, textY);
+
 
         g2.setFont(new Font("Arial", Font.PLAIN, 24));
         String instructionText = currentLevel < 3 ? "Press 'N' for Level " + (currentLevel + 1) : "Press 'N' to finish the game!";
         textWidth = g.getFontMetrics().stringWidth(instructionText);
         textX = (Stage.WIDTH - textWidth) / 2;
-        textY = Stage.HEIGHT / 2 + 30;
+        textY = Stage.HEIGHT / 2 + 100;
         g.drawString(instructionText, textX, textY);
     }
     
@@ -540,15 +619,29 @@ protected void paintComponent(Graphics g) {
         String completeText = "GAME COMPLETED!";
         int textWidth = g.getFontMetrics().stringWidth(completeText);
         int textX = (Stage.WIDTH - textWidth) / 2;
-        int textY = Stage.HEIGHT / 2;
+        int textY = Stage.HEIGHT / 2 - 100;
         g.drawString(completeText, textX, textY);
         
         g2.setFont(new Font("Arial", Font.PLAIN, 24));
         String messageText = "You collected all the treasures!";
         textWidth = g.getFontMetrics().stringWidth(messageText);
         textX = (Stage.WIDTH - textWidth) / 2;
-        textY = Stage.HEIGHT / 2 + 60;
+        textY = Stage.HEIGHT / 2 - 40;
         g.drawString(messageText, textX, textY);
-    }
-}
+        
+        g2.setFont(new Font("Arial", Font.BOLD, 30));
+        g.setColor(Color.WHITE);
+        int scoreY = Stage.HEIGHT / 2;
+        int scoreX = (Stage.WIDTH / 2) - 150; 
+        
+        g.drawString("Final Score Summary:", scoreX, scoreY);
+        
+        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+        scoreY += 30;
+        
+        g.drawString("Level 1 Time: " + formatTime(timeElapsedL1) + "  " + getStarString(getStars(timeElapsedL1)), scoreX, scoreY + 20);
+        g.drawString("Level 2 Time: " + formatTime(timeElapsedL2) + "  " + getStarString(getStars(timeElapsedL2)), scoreX, scoreY + 45);
+        g.drawString("Level 3 Time: " + formatTime(timeElapsedL3) + "  " + getStarString(getStars(timeElapsedL3)), scoreX, scoreY + 70);
+    	}
+	}
 }
