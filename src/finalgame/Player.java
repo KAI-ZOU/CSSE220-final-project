@@ -89,12 +89,12 @@ public class Player extends Entity{
 		// TODO Auto-generated method stub
 		xPosition+=velocityX;
 		yPosition+=velocityY;
-//		if () {
-//			
-//		}
-//		else if () {
-//			
-//		}
+		if (velocityX>0 && sprites.size()>1) {
+			setSprite("RUNNINGRIGHT");
+		}
+		else {
+			setSprite("DEFAULT");
+		}
 	}
 	@Override
 	protected void paintComponent(Graphics g) {

@@ -54,7 +54,9 @@ public class Level extends JPanel{
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
 		
-		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{""}, new Sprite[] {new Sprite(new int[] {30, 30}, new int[] {30, 30}, new String[] {"playerTest.png", "playerTest2.png"}, 0.07, false)});
+		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{"DEFAULT", "RUNNINGRIGHT"}, new Sprite[] {new Sprite(50,50, "player131.png"), new Sprite(new int[] {50,50,50,50,50,50,50,50,50}, new int[] {50,50,50,50,50,50,50,50,50}, new String[] {"player143.png", "player144.png", "player145.png", "player146.png", "player147.png", "player148.png", "player149.png", "player150.png", "player151.png"}, 0.2, false)});
+//		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{""}, new Sprite[] {new Sprite(new int[] {30, 30}, new int[] {30, 30}, new String[] {"playerTest.png", "playerTest2.png"}, 0.07, false)});
+//		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{"DEFAULT"}, new Sprite[] {new Sprite(30,30, "playerTest.png")});
 
 		loadLevel(currentLevel); 
 		

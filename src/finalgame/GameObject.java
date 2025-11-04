@@ -41,7 +41,18 @@ public abstract class GameObject extends JComponent{
 		velocityX = 0;
 		velocityY = 0;
 		
-		usedSprite = sprites[0];
+		
+
+		for (int i = 0; i < spriteNames.length; i++) {
+			if (spriteNames[i] == "") {
+				this.sprites.put("DEFAULT", sprites[i]);
+			}
+			else {
+				this.sprites.put(spriteNames[i], sprites[i]);
+			}
+		}
+		
+		usedSprite = this.sprites.get("DEFAULT");
 //		for (int i = 0; i < spriteNames) { // TECHNICALLY SHOULD CHECK FOR NAMES AND SPRITES BEING SAME LENGTH
 //			
 //		}
