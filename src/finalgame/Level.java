@@ -133,7 +133,7 @@ objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[
 	    currentLevel++;
 	    if (currentLevel > 2) { 
 	        gameFinished = true;
-	        timer.stop(); 
+//	        timer.stop(); 
 	        levelPassed = false;
 	    } else {
 	        levelPassed = false;
@@ -338,7 +338,7 @@ objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[
 					if (pressedKeys.contains(KeyEvent.VK_E) && !levelPassed)
 					{
 						score += COIN_POINT_VALUE;
-						toRemove.add(obj);
+						toRemove.add(obj); // directly removing from the arraylist causes issues due to modification during iteration
 					}
 				}
 			}
@@ -363,6 +363,9 @@ objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[
 	    }
 	    if ((pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_SPACE))&&player.onGround) {
 	    	accelY -= 13;
+	    }
+	    else if (player.onGround) {
+	    	
 	    }
 	    else {
 	    	accelY +=1;
