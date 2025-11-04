@@ -1,6 +1,7 @@
 package finalgame;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Player extends Entity{
 
@@ -24,6 +25,20 @@ public class Player extends Entity{
 		super(id, xPosition, yPosition, spriteNames, sprites);
 		this.hp = 100;
 	}
+	
+	
+	
+	public void takeDamage(int amount)
+	{
+//		double now = System.currentTimeMillis(); Will use system time to determine invincibility and damage all in one
+		//probably should add an if statement to determine whether or not the character is invincible or not
+		hp -= amount;
+		if (hp <= 0)
+		{
+			//Something here
+		}
+	}
+	
 	
 	public void applyAcceleration(int accelX, int accelY) { // CONSIDER APPLYING ACCELERATION TO AUTOMATIC ENEMY MOVEMENT? IT WOULD BE HARD SINCE YOU'D HAVE TO EITHER KNOW WHEN TO SLOW DOWN BEFORE REACHING THE BOUND OR ACCOUNT FOR GOING PAST THE BOUND DUE TO ACCELERATION
 	    int accelerationCoefficient = 1; // will be used for special platforms? (ice, slime, water, etc)
