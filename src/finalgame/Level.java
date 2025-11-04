@@ -30,7 +30,7 @@ public class Level extends JPanel{
     private final int SPAWN_Y = 100;
     private final int INITIAL_HP = 100;
     private ArrayList<Platform> platforms = new ArrayList<>();
-	
+	long start, start2, start3;
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	int prevX;
 	int prevY;
@@ -71,7 +71,7 @@ public class Level extends JPanel{
         if (level == 1) {
             requiredscore = 80; 
             coinCount = 4;
-            
+            start = System.currentTimeMillis();
             Platform p1 = new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p2 = new Platform(0, 300, 270, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p3 = new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
@@ -94,7 +94,8 @@ public class Level extends JPanel{
         } else if (level == 2) {
             requiredscore = 100; 
             coinCount = 5;
-
+            start2 = System.currentTimeMillis();
+            
             platforms.add(new Platform(0, 100, 600, 800, 50, 0, 0, new String[]{""}, new Sprite[] {new Sprite(800, 50, "BrickPlatform.png")}));
             
             platforms.add(new Platform(0, 50, 400, 350, 0, 2, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
@@ -116,6 +117,7 @@ public class Level extends JPanel{
 		else if (level == 3) {
 			requiredscore = 200;
 			coinCount = 10;
+            start3 = System.currentTimeMillis();
 
 			platforms.add(new Platform(0, 100, 600, 800, 50, 0, 0, new String[] { "" },
 					new Sprite[] { new Sprite(800, 50, "BrickPlatform.png") }));
@@ -154,7 +156,7 @@ public class Level extends JPanel{
 	        gameFinished = true;
 //	        timer.stop(); 
 	        levelPassed = false;
-	    } else if(getCoinCount() == 0){
+	        } else if(getCoinCount() == 0){
 	        levelPassed = false;
 	        score = 0;
 	        loadLevel(currentLevel); 
