@@ -15,34 +15,34 @@ public class Enemy extends Entity{
 		super(id, xPosition, yPosition, spriteNames, sprites);
 	}
 	
-	@Override
-	public void update() {
-	    xPosition += velocityX;
-	    yPosition += velocityY;
-
-	    int enemyWidth = usedSprite.width;
-	    int enemyHeight = usedSprite.height;
-
-	    if (xPosition < 0) {
-	        xPosition = 0;
-	        velocityX = -velocityX; 
-	    } else if (xPosition + enemyWidth > Stage.WIDTH) {
-	        xPosition = Stage.WIDTH - enemyWidth;
-	        velocityX = -velocityX; 
-	    }
-
-	    if (yPosition < 0) {
-	        yPosition = 0;
-	        velocityY = -velocityY; 
-	    } else if (yPosition + enemyHeight > Stage.HEIGHT) {
-	    	yPosition = Stage.HEIGHT - enemyHeight; 
-	    	velocityY = -velocityY; 
-	    }
-	    
-	    if (velocityY > 110) {
-	    	velocityY = 110;
-	    }
-	}
+//	@Override
+//	public void update() {
+//	    xPosition += velocityX;
+//	    yPosition += velocityY;
+//
+//	    int enemyWidth = usedSprite.width;
+//	    int enemyHeight = usedSprite.height;
+//
+//	    if (xPosition < 0) {
+//	        xPosition = 0;
+//	        velocityX = -velocityX; 
+//	    } else if (xPosition + enemyWidth > Stage.WIDTH) {
+//	        xPosition = Stage.WIDTH - enemyWidth;
+//	        velocityX = -velocityX; 
+//	    }
+//
+//	    if (yPosition < 0) {
+//	        yPosition = 0;
+//	        velocityY = -velocityY; 
+//	    } else if (yPosition + enemyHeight > Stage.HEIGHT) {
+//	    	yPosition = Stage.HEIGHT - enemyHeight; 
+//	    	velocityY = -velocityY; 
+//	    }
+//	    
+//	    if (velocityY > 110) {
+//	    	velocityY = 110;
+//	    }
+//	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
