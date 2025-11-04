@@ -2,6 +2,7 @@ package finalgame;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
@@ -18,6 +19,10 @@ public abstract class GameObject extends JComponent{
 	int movementRangeX;
 	int movementRangeY;
 	
+	public Rectangle getHitBox()
+	{
+		return new Rectangle (xPosition, yPosition, usedSprite.width, usedSprite.height);
+	}
 	
 	public GameObject(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
 		this(id, xPosition, yPosition, spriteNames, sprites);
