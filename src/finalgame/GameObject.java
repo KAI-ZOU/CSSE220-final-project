@@ -75,6 +75,7 @@ public abstract class GameObject extends JComponent{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		usedSprite.updateImage();
 		Graphics2D g2 = (Graphics2D) g;
 		if (usedSprite.spriteLoaded) {
 			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null);
