@@ -14,14 +14,17 @@ public class Sprite {
 	public String[] filePathes;
 	public Rectangle[] boundingBoxes;
 	public Rectangle boundingBox;
+	
 //	public Rectangle[] attackingCollisionBoxes; // this and the one below might not be happening
 //	public Rectangle[] selfCollisionBoxes;
+	
 	public BufferedImage image;
 	public BufferedImage[] images;
 	public boolean spriteLoaded = false;
 	public double animationInt = 0;
 	public int modVal = 1;
 	public double trueMod;
+	boolean keepEnd = false;
   
 	
 	public Sprite(int width, int height, String filePath) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
@@ -43,7 +46,7 @@ public class Sprite {
 		updateImage();
 	}
 	
-	public Sprite(int[] width, int[] height, String[] filePath, double trueMod) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
+	public Sprite(int[] width, int[] height, String[] filePath, double trueMod, boolean keepEnd) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
 		this.widthes = width;
 		this.heights = height;
 		this.filePathes = filePath;
@@ -51,6 +54,7 @@ public class Sprite {
 		this.trueMod = trueMod;
 		this.images = new BufferedImage[width.length];
 		this.boundingBoxes = new Rectangle[width.length];
+		this.keepEnd = keepEnd;
 		if (width.length == height.length && height.length == filePath.length) {
 			for (int i = 0; i < filePath.length; i++) {
 				boundingBoxes[i] = new Rectangle(width[i], height[i]);
@@ -68,12 +72,28 @@ public class Sprite {
 	}
 	
 	public void updateImage() {
-		animationInt = animationInt%modVal;
-		this.width = widthes[(int)animationInt];
-		this.height = heights[(int)animationInt];
-		this.boundingBox = boundingBoxes[(int)animationInt];
-		this.image = images[(int)animationInt];
-      
-       animationInt+=trueMod;
+		if (!keepEnd) {
+			animationInt = animationInt%modVal;
+			this.width = widthes[(int)animationInt];
+			this.height = heights[(int)animationInt];
+			this.boundingBox = boundingBoxes[(int)animationInt];
+			this.image = images[(int)animationInt];
+			animationInt+=trueMod;
+		}
+		else {
+			if (animationInt < modVal) {
+				this.width = widthes[(int)animationInt];
+				this.height = heights[(int)animationInt];
+				this.boundingBox = boundingBoxes[(int)animationInt];
+				this.image = images[(int)animationInt];
+				animationInt+=trueMod;
+			}
+			else {
+				this.width = widthes[(int)modVal-1];
+				this.height = heights[(int)modVal-1];
+				this.boundingBox = boundingBoxes[(int)modVal-1];
+				this.image = images[(int)modVal-1];
+			}
+		}
 	}
 }
