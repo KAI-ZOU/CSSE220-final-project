@@ -19,8 +19,9 @@ public class Sprite {
 	public BufferedImage image;
 	public BufferedImage[] images;
 	public boolean spriteLoaded = false;
-	public int animationInt = 0;
+	public double animationInt = 0;
 	public int modVal = 1;
+	public double trueMod = 0.05;
   
 	
 	public Sprite(int width, int height, String filePath) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
@@ -67,11 +68,11 @@ public class Sprite {
 	
 	public void updateImage() {
 		animationInt = animationInt%modVal;
-		this.width = widthes[animationInt];
-		this.height = heights[animationInt];
-		this.boundingBox = boundingBoxes[animationInt];
-		this.image = images[animationInt];
+		this.width = widthes[(int)animationInt];
+		this.height = heights[(int)animationInt];
+		this.boundingBox = boundingBoxes[(int)animationInt];
+		this.image = images[(int)animationInt];
       
-       animationInt+=1;
+       animationInt+=trueMod;
 	}
 }
