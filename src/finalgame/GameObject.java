@@ -73,6 +73,7 @@ public abstract class GameObject extends JComponent{
 		Graphics2D g2 = (Graphics2D) g;
 		if (usedSprite.spriteLoaded) {
 			g2.drawImage(usedSprite.image, xPosition,  yPosition,  usedSprite.width,  usedSprite.height, null);
+			 // note: commenting this out doesn't make the enemy stop updating its position. 
 		}
 	}
 }

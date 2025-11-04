@@ -27,8 +27,4 @@ public abstract class Entity extends GameObject{
 		xPosition+=velocityX;
 		yPosition+=velocityX;
 	}
-	
-	public void getNextPosition() { // NEED TO THINK WAY MORE ABOUT THIS ONE.
-		
-	}
 }

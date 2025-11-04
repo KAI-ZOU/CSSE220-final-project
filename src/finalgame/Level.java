@@ -122,7 +122,7 @@ public class Level extends JPanel{
 	    currentLevel++;
 	    if (currentLevel > 2) { 
 	        gameFinished = true;
-	        timer.stop(); 
+//	        timer.stop(); 
 	        levelPassed = false;
 	    } else {
 	        levelPassed = false;
@@ -327,7 +327,7 @@ public class Level extends JPanel{
 					if (pressedKeys.contains(KeyEvent.VK_E) && !levelPassed)
 					{
 						score += COIN_POINT_VALUE;
-						toRemove.add(obj);
+						toRemove.add(obj); // directly removing from the arraylist causes issues due to modification during iteration
 					}
 				}
 			}
@@ -352,6 +352,9 @@ public class Level extends JPanel{
 	    }
 	    if ((pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_SPACE))&&player.onGround) {
 	    	accelY -= 13;
+	    }
+	    else if (player.onGround) {
+	    	
 	    }
 	    else {
 	    	accelY +=1;
