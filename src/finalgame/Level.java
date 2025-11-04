@@ -86,9 +86,14 @@ public class Level extends JPanel{
             platforms.add(p5);
             platforms.add(p6);
             
+
             objects.add(new Enemy(0, 450, 120, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 250, 690, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+
             
         } else if (level == 2) {
             requiredscore = 100; 
@@ -104,9 +109,15 @@ public class Level extends JPanel{
             
             platforms.add(new Platform(0, 800, 425, 0, 175, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
             
+
             objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 450, 200, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+
+            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+
             
         } else {
             
@@ -199,11 +210,11 @@ public class Level extends JPanel{
 		return count;
 	}
 	
-	private void restartLevel() {
-		levelPassed = false;
-		score = 0; 
-		loadLevel(currentLevel); 
-	}
+//	private void restartLevel() {
+//		levelPassed = false;
+//		score = 0; 
+//		loadLevel(currentLevel); 
+//	}
 
 	public void tick() {
 		if (!gameFinished && score >= requiredscore && !levelPassed) {
@@ -214,7 +225,7 @@ public class Level extends JPanel{
 		boolean fellToDeath = player.yPosition > Stage.HEIGHT;
 		
 		if ((fellToDeath || player.hp <= 0) && !levelPassed && !gameFinished) {
-            restartLevel();
+            //restartLevel(); Player will get a need to try again screen
             repaint(); 
             return; 
         }
@@ -393,7 +404,30 @@ protected void paintComponent(Graphics g) {
 	if (!gameFinished) {
 		player.paintComponent(g);
 	}
-    
+	boolean fellToDeath = player.yPosition > Stage.HEIGHT;
+
+	if ((fellToDeath || player.hp <= 0) && !levelPassed && !gameFinished)
+    {
+    	Graphics2D g2 = (Graphics2D) g;
+    	
+        g.setColor(new Color(0, 0, 0, 180)); 
+        g.fillRect(0, 0, Stage.WIDTH, Stage.HEIGHT);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 60));
+        g.setColor(Color.WHITE);
+        String completeText = "GAME FAILED!";
+        int textWidth = g.getFontMetrics().stringWidth(completeText);
+        int textX = (Stage.WIDTH - textWidth) / 2;
+        int textY = Stage.HEIGHT / 2;
+        g.drawString(completeText, textX, textY);
+        
+        g2.setFont(new Font("Arial", Font.PLAIN, 24));
+        String messageText = "You must try again!";
+        textWidth = g.getFontMetrics().stringWidth(messageText);
+        textX = (Stage.WIDTH - textWidth) / 2;
+        textY = Stage.HEIGHT / 2 + 60;
+        g.drawString(messageText, textX, textY);
+    }
     if (!gameFinished) {
     	Font hudFont = new Font("Arial", Font.PLAIN, 20); 
         g.setFont(hudFont); 
