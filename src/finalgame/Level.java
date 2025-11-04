@@ -46,7 +46,7 @@ public class Level extends JPanel{
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
 		
-		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{""}, new Sprite[] {new Sprite(new int[] {30, 30}, new int[] {30, 30}, new String[] {"playerTest.png", "playerTest2.png"}, 2)});
+		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{""}, new Sprite[] {new Sprite(new int[] {30, 30}, new int[] {30, 30}, new String[] {"playerTest.png", "playerTest2.png"}, 0.01)});
 
 		loadLevel(currentLevel); 
 		
@@ -88,8 +88,22 @@ public class Level extends JPanel{
             
             objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+
+            objects.add(new Enemy(0, 450, 120, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+            objects.add(new Enemy(0, 250, 690, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             
+            objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 650, 400, 200, 100, 7, 7, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+
+            objects.add(new Enemy(0, 550, 800, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
+            objects.add(new Enemy(0, 950, 500, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
+            platforms.add(new Platform(0, 550, 950, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "Blank-PNG-Pic.png")}));
+            
+            objects.add(new Enemy(0, 550, 800, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
+            objects.add(new Enemy(0, 950, 500, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
+            platforms.add(new Platform(0, 550, 950, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "Blank-PNG-Pic.png")}));
             
         } else if (level == 2) {
             requiredscore = 100; 
@@ -107,13 +121,25 @@ public class Level extends JPanel{
             
             platforms.add(new Platform(0, 800, 425, 0, 175, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
             
+
+
             objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+            objects.add(new Enemy(0, 450, 200, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
+            objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[]{""}, new Sprite[] {new Sprite(55, 55, "enemyTest.png")}));
             
-            
-        } 
+        
+//            public Enemy(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
+//        		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
+//        	}
+//            public Platform(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
+//        		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
+//        	}
+        }  
 		else if (level == 3) {
 			requiredscore = 200;
 			coinCount = 10;
