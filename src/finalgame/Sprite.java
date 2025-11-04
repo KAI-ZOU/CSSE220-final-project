@@ -21,7 +21,7 @@ public class Sprite {
 	public boolean spriteLoaded = false;
 	public double animationInt = 0;
 	public int modVal = 1;
-	public double trueMod = 0.05;
+	public double trueMod;
   
 	
 	public Sprite(int width, int height, String filePath) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
@@ -43,11 +43,12 @@ public class Sprite {
 		updateImage();
 	}
 	
-	public Sprite(int[] width, int[] height, String[] filePath, int modVal) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
+	public Sprite(int[] width, int[] height, String[] filePath, double trueMod) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
 		this.widthes = width;
 		this.heights = height;
 		this.filePathes = filePath;
-		this.modVal = modVal;
+		this.modVal = width.length;
+		this.trueMod = trueMod;
 		this.images = new BufferedImage[width.length];
 		this.boundingBoxes = new Rectangle[width.length];
 		if (width.length == height.length && height.length == filePath.length) {
