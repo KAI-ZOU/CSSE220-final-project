@@ -98,6 +98,10 @@ public class Level extends JPanel{
             objects.add(new Enemy(0, 950, 500, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
             platforms.add(new Platform(0, 550, 950, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "Blank-PNG-Pic.png")}));
             
+            objects.add(new Enemy(0, 550, 800, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
+            objects.add(new Enemy(0, 950, 500, 100, 100, 0, 0, new String[]{""}, new Sprite[] {new Sprite(55, 55, "Spike.png")}));
+            platforms.add(new Platform(0, 550, 950, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(150, 15, "Blank-PNG-Pic.png")}));
+            
         } else if (level == 2) {
             requiredscore = 100; 
             coinCount = 5;
