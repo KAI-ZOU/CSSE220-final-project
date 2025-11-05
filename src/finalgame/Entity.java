@@ -4,8 +4,8 @@ package finalgame;
 public abstract class Entity extends GameObject{
 
 	int hp;
-	int movementSpeedX; // might not implement
-	int movementSpeedY; // might not
+//	int movementSpeedX; // might not implement
+//	int movementSpeedY; // might not
 //	HeldItem item; // uh.. idk. // later, might not
 	
 

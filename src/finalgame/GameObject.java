@@ -18,11 +18,6 @@ public abstract class GameObject extends JComponent{
 	int velocityY;
 	int movementRangeX;
 	int movementRangeY;
-	
-	public Rectangle getHitBox()
-	{
-		return new Rectangle (xPosition, yPosition, usedSprite.width, usedSprite.height);
-	}
 
 	public GameObject () {
 		

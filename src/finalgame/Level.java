@@ -40,8 +40,6 @@ public class Level extends JPanel{
 	private final long STAR_1_LIMIT_MS = 60000;
 
 	private final Set<Integer> pressedKeys = new HashSet<>();
-	int prevX;
-	int prevY;
 	ArrayList<GameObject> toRemove = new ArrayList<>();
 	
 	long pastTime = System.currentTimeMillis();
@@ -54,7 +52,7 @@ public class Level extends JPanel{
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
 		
-		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{"DEFAULT", "RUNNINGRIGHT"}, new Sprite[] {new Sprite(50,50, "player131.png"), new Sprite(new int[] {50,50,50,50,50,50,50,50,50}, new int[] {50,50,50,50,50,50,50,50,50}, new String[] {"player143.png", "player144.png", "player145.png", "player146.png", "player147.png", "player148.png", "player149.png", "player150.png", "player151.png"}, 0.2, false)});
+		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{"DEFAULT", "RUNNINGRIGHT"}, new Sprite[] {new Sprite(80,80, "player131.png"), new Sprite(new int[] {80,80,80,80,80,80,80,80,80}, new int[] {80,80,80,80,80,80,80,80,80}, new String[] {"player143.png", "player144.png", "player145.png", "player146.png", "player147.png", "player148.png", "player149.png", "player150.png", "player151.png"}, 0.2, false)});
 //		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{""}, new Sprite[] {new Sprite(new int[] {30, 30}, new int[] {30, 30}, new String[] {"playerTest.png", "playerTest2.png"}, 0.07, false)});
 //		player = new Player(0, SPAWN_X, SPAWN_Y, new String[]{"DEFAULT"}, new Sprite[] {new Sprite(30,30, "playerTest.png")});
 
@@ -88,7 +86,7 @@ public class Level extends JPanel{
             // Define the platforms that coins are allowed to spawn on (the main, visible platforms)
             ArrayList<Platform> mainPlatforms = new ArrayList<>();
             
-            Platform p1 = new Platform(0, 200, 240, 70, 0, 1, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
+            Platform p1 = new Platform(0, 200, 240, 70, 0, 2, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             //Platform p2 = new Platform(0, 300, 270, 0, 0, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p3 = new Platform(0, 50, 320, 0, 60, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")});
             Platform p4 = new Platform(0, 50, 490, 0, 140, 0, 2, new String[]{""}, new Sprite[] {new Sprite(700, 15, "BrickPlatform.png")});
@@ -105,14 +103,14 @@ public class Level extends JPanel{
             mainPlatforms.addAll(platforms); 
             
 
-            objects.add(new Enemy("EnemyFlail", 400, 100));
-            objects.add(new Enemy("EnemyFlailFlying", 250, 100));
-            objects.add(new Enemy("EnemySpearFlying", 550, 100));
-            objects.add(new Enemy("EnemyKatana", 400, 250));
-            objects.add(new Enemy("EnemySpear", 250, 250));
-            objects.add(new Enemy("EnemyDSpear", 550, 250));
-            objects.add(new Enemy("EnemyAxe", 400, 400));
-            objects.add(new Enemy("EnemySkeleton", 250, 400));
+//            objects.add(new Enemy("EnemyFlail", p1, 1, 10, 60));
+            objects.add(new Enemy("EnemyFlailFlying", 250, 100, 0, 80, 0, 1));
+            objects.add(new Enemy("EnemySpearFlying", 550, 100, 80, 30, 1, 1));
+            objects.add(new Enemy("EnemyKatana", 400, 250, 100, 0, 1, 0));
+//            objects.add(new Enemy("EnemySpear", 250, 250));
+//            objects.add(new Enemy("EnemyDSpear", 550, 250));
+//            objects.add(new Enemy("EnemyAxe", 400, 400));
+//            objects.add(new Enemy("EnemySkeleton", 250, 400));
             
 //            objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
 //            objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
@@ -143,14 +141,14 @@ public class Level extends JPanel{
             
             platforms.add(new Platform(0, 800, 375, 0, 200, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
 
-            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 450, 200, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
-            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 450, 200, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
+//            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
             
             spawnCoins(coinCount, platforms);
 
@@ -169,18 +167,18 @@ public class Level extends JPanel{
 
             platforms.add(new Platform(0, 600, 500, 200, 15, 0, 0, new String[]{""}, new Sprite[] {new Sprite(200, 15, "BrickPlatform.png")}));
 
-			objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[] { "" },
-					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 700, 600, 100, 100, 5, 5, new String[] { "" },
-					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[] { "" },
-					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 450, 300, 100, 100, 5, 5, new String[] { "" },
-					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 300, 400, 100, 100, 5, 5, new String[] { "" },
-					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
-			objects.add(new Enemy(0, 200, 300, 100, 100, 8, 8, new String[] { "" },
-					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
+//			objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[] { "" },
+//					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
+//			objects.add(new Enemy(0, 700, 600, 100, 100, 5, 5, new String[] { "" },
+//					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
+//			objects.add(new Enemy(0, 650, 300, 100, 100, 8, 8, new String[] { "" },
+//					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
+//			objects.add(new Enemy(0, 450, 300, 100, 100, 5, 5, new String[] { "" },
+//					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
+//			objects.add(new Enemy(0, 300, 400, 100, 100, 5, 5, new String[] { "" },
+//					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
+//			objects.add(new Enemy(0, 200, 300, 100, 100, 8, 8, new String[] { "" },
+//					new Sprite[] { new Sprite(55, 55, "BlackBatYellow.png") }));
 	        spawnCoins(coinCount, platforms);
 	        
 
@@ -214,8 +212,8 @@ public class Level extends JPanel{
             if (obj instanceof Item) {
                 Item existingCoin = (Item) obj;
                 
-                int existingCenterX = existingCoin.xPosition + existingCoin.usedSprite.width / 2;
-                int existingCenterY = existingCoin.yPosition + existingCoin.usedSprite.height / 2;
+                int existingCenterX = (int)existingCoin.xPosition + existingCoin.usedSprite.width / 2;
+                int existingCenterY = (int)existingCoin.yPosition + existingCoin.usedSprite.height / 2;
 
                 int dx = newCenterX - existingCenterX;
                 int dy = newCenterY - existingCenterY;
@@ -250,12 +248,12 @@ public class Level extends JPanel{
                 int maxSpawnRange = parentPlatform.usedSprite.width - coinWidth;
                 if (maxSpawnRange < 0) maxSpawnRange = 0; 
 
-                int spawnX = parentPlatform.xPosition;
+                int spawnX = (int)parentPlatform.xPosition;
                 if (maxSpawnRange > 0) {
                     spawnX += rand.nextInt(maxSpawnRange);
                 }
                 
-                int spawnY = parentPlatform.yPosition - coinHeight; 
+                int spawnY = (int)parentPlatform.yPosition - coinHeight; 
                     
                 int range = 30; 
                 int velocity = 1;
@@ -358,8 +356,6 @@ public class Level extends JPanel{
 		if (!levelPassed && !gameFinished) { 
 			handleInput();
 			player.onGround = false;
-			prevX = player.xPosition;
-			prevY = player.yPosition;
 			player.update();
 			
             if (player.xPosition < 0) {
@@ -393,15 +389,15 @@ public class Level extends JPanel{
 		
 		
 		for (GameObject obj:objects) {
-			int leftmostPlayer = player.xPosition;
-			int rightmostPlayer = player.xPosition + player.usedSprite.width;
-			int topmostPlayer = player.yPosition;
-			int bottommostPlayer = player.yPosition + player.usedSprite.height;
+			double leftmostPlayer = player.xPosition;
+			double rightmostPlayer = player.xPosition + player.usedSprite.width;
+			double topmostPlayer = player.yPosition;
+			double bottommostPlayer = player.yPosition + player.usedSprite.height;
 
-			int leftmostObject = obj.xPosition;
-			int rightmostObject = obj.xPosition + obj.usedSprite.width;
-			int topmostObject = obj.yPosition;
-			int bottommostObject = obj.yPosition + obj.usedSprite.height;
+			double leftmostObject = obj.xPosition;
+			double rightmostObject = obj.xPosition + obj.usedSprite.width;
+			double topmostObject = obj.yPosition;
+			double bottommostObject = obj.yPosition + obj.usedSprite.height;
 
 			if (obj instanceof Enemy) {
 				Enemy enemy = (Enemy) obj;
@@ -418,13 +414,13 @@ public class Level extends JPanel{
 					Platform platform = (Platform) obj;
 							player.xPosition+=platform.velocityX;
 
-						    int overlapRight = rightmostPlayer - leftmostObject;
-						    int overlapLeft = rightmostObject - leftmostPlayer;
-						    int overlapBottom = bottommostPlayer - topmostObject;
-						    int overlapTop = bottommostObject - topmostPlayer;
+							double overlapRight = rightmostPlayer - leftmostObject;
+							double overlapLeft = rightmostObject - leftmostPlayer;
+							double overlapBottom = bottommostPlayer - topmostObject;
+							double overlapTop = bottommostObject - topmostPlayer;
 						
-						    int minOverlapX = Math.min(overlapRight, overlapLeft);
-						    int minOverlapY = Math.min(overlapBottom, overlapTop);
+							double minOverlapX = Math.min(overlapRight, overlapLeft);
+							double minOverlapY = Math.min(overlapBottom, overlapTop);
 
 						    if (minOverlapX < minOverlapY) {
 						        if (overlapRight < overlapLeft) {
