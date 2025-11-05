@@ -23,6 +23,10 @@ public abstract class GameObject extends JComponent{
 	{
 		return new Rectangle (xPosition, yPosition, usedSprite.width, usedSprite.height);
 	}
+
+	public GameObject () {
+		
+	}
 	
 	public GameObject(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
 		this(id, xPosition, yPosition, spriteNames, sprites);
