@@ -107,10 +107,10 @@ public class Level extends JPanel{
             objects.add(new Enemy("EnemyFlailFlying", 250, 100, 0, 80, 0, 1));
             objects.add(new Enemy("EnemySpearFlying", 550, 100, 80, 30, 1, 1));
             objects.add(new Enemy("EnemyKatana", 400, 250, 100, 0, 1, 0));
-//            objects.add(new Enemy("EnemySpear", 250, 250));
-//            objects.add(new Enemy("EnemyDSpear", 550, 250));
-//            objects.add(new Enemy("EnemyAxe", 400, 400));
-//            objects.add(new Enemy("EnemySkeleton", 250, 400));
+            objects.add(new Enemy("EnemySpear", 250, 250, 60, 0, 1, 0));
+            objects.add(new Enemy("EnemyDSpear", 550, 250, 200, 0, 2, 0));
+            objects.add(new Enemy("EnemyAxe", 400, 400, 150, 0, 2, 0));
+            objects.add(new Enemy("EnemySkeleton", 250, 400, 100, 0, 1, 0));
             
 //            objects.add(new Enemy(0, 950, 320, 100, 100, 3, 3, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
 //            objects.add(new Enemy(0, 250, 990, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
