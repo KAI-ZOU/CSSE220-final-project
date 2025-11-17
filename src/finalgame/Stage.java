@@ -11,8 +11,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-// pretty much just the background, should have no actual effect on the player or other entities or objects
-// DO SOMETHING TO CENTER EVERYTHING EVEN WHEN WINDOW IS EXPANDED
+/*
+ * This class is essentially just the background for our levels. It is a rectangular image.
+ */
 public class Stage extends JComponent{
 	
 	public static final int WIDTH = 1000;
@@ -23,7 +24,6 @@ public class Stage extends JComponent{
 	
 	public Stage(String filePath) {
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-//		this.setLayout(new BorderLayout());
 		
 		try {
 			image = ImageIO.read(Sprite.class.getResource(filePath));
@@ -31,7 +31,6 @@ public class Stage extends JComponent{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			spriteLoaded = false;
-//			e.printStackTrace();
 		}
 		
 	}

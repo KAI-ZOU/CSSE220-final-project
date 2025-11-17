@@ -28,7 +28,7 @@ public class Level extends JPanel{
 	Stage stage = new Stage("Rain-World-Exteriors.jpg");
 	private final int SPAWN_X = 400;
     private final int SPAWN_Y = 100;
-    private final int INITIAL_HP = 100;
+    private final int INITIAL_HP = 1000;
     private ArrayList<Platform> platforms = new ArrayList<>();
 	long levelStartTime;
 	private long timeElapsedL1 = -1;
@@ -48,6 +48,9 @@ public class Level extends JPanel{
 	private static final int MIN_COIN_DISTANCE = 40;
 	private static final int COIN_POINT_VALUE = 20; 
 
+	/*
+	 * Contains all GameObjects, Player, logic for spawning items (coins), movement logic, input management logic, collision logic, timer updates.
+	 */
 	public Level() { 
 		this.setPreferredSize(new Dimension(Stage.WIDTH, Stage.HEIGHT));
 		this.setBackground(Color.BLACK);
@@ -141,6 +144,16 @@ public class Level extends JPanel{
             
             platforms.add(new Platform(0, 800, 375, 0, 200, 0, 3, new String[]{""}, new Sprite[] {new Sprite(150, 15, "BrickPlatform.png")}));
 
+
+            objects.add(new Enemy("EnemyFlailFlying", 100, 505, 100, 40, 1, 1));
+            objects.add(new Enemy("EnemySpearFlying", 700, 505, 100, 30, 1, 1));
+            objects.add(new Enemy("EnemyKatana", 650, 300, 100, 0, 1, 0));
+            objects.add(new Enemy("EnemySpear", 100, 505, 60, 0, 1, 0));
+            objects.add(new Enemy("EnemyDSpear", 450, 200, 200, 0, 2, 0));
+            objects.add(new Enemy("EnemyAxe", 100, 545, 150, 0, 2, 0));
+            objects.add(new Enemy("EnemySkeleton", 700, 505, 100, 0, 1, 0));
+            
+            
 //            objects.add(new Enemy(0, 100, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
 //            objects.add(new Enemy(0, 700, 545, 100, 100, 5, 5, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));
 //            objects.add(new Enemy(0, 650, 300, 100, 100, 4, 4, new String[]{""}, new Sprite[] {new Sprite(55, 55, "BlackBatYellow.png")}));

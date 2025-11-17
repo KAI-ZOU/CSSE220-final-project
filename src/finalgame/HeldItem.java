@@ -5,3 +5,7 @@
 //	boolean isOnMap;
 //	// and the player auto holds their last picked up coin for some random powerup
 //}
+
+/*
+/* Not used. Ignore.
+*/

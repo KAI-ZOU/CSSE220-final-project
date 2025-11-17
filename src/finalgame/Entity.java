@@ -8,7 +8,10 @@ public abstract class Entity extends GameObject{
 //	int movementSpeedY; // might not
 //	HeldItem item; // uh.. idk. // later, might not
 	
-
+/*
+ * Somewhat redundant after deciding to give all GameObjects motion. Now that movement ranges and velocities are in GameObject, and since enemies don't have health,
+ * there's not very much of a reason for this class, aside from future changes that might only affect living things (Player and Enemy (and other?)).
+ */
 	public Entity(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
 		super(id, xPosition, yPosition, spriteNames, sprites);
 		// TODO Auto-generated constructor stub

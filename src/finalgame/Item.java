@@ -8,6 +8,9 @@ public class Item extends GameObject{
 	// never mind (about below). can delete flag later.
 	// might want a boolean has been collected? something like that, then a  check in update to stop drawing it
 	
+	/*
+	 * Mostly just a standard GameObject, but with a score field. This class can be collected by the player upon input and collision to give the player the score.
+	 */
 	public Item(int id, int xPosition, int yPosition, String[] spriteNames, Sprite[] sprites) {
 		super(id, xPosition, yPosition, spriteNames, sprites);
 	}

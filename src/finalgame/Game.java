@@ -10,7 +10,9 @@ public class Game {
 	Level level = new Level();// actual game will have multiple (array, list, or hm)
 	// dimensions. for the whole frame. also do a thing so th egame is always in the center even if it doesnt resize.
 	
-	
+	/*
+	 * Creates a Level class and displays it. The Level class' name is misleading, as it contains all the levels. It's not a level itself. It also has more than just levels.
+	 */
 	public Game() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(level); 

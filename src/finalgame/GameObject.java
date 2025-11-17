@@ -7,6 +7,10 @@ import java.util.HashMap;
 
 import javax.swing.JComponent;
 
+/*
+ * Parent class for any object that will be displayed on the screen. All GameObjects have sprites and collision boxes (corresponding to the sprite's size). They also all have
+ * movement ranges and velocities, though these are often set to 0 for stationary objects.
+ */
 public abstract class GameObject extends JComponent{
 	public HashMap<String, Sprite> sprites = new HashMap<>();
 	public Sprite usedSprite;

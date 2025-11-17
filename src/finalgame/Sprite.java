@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 public class Sprite {
-	// a way to add ..... maybe use key value and switch statement within the lowest class, and have a method to changestate and
 	public int[] widthes;//?
 	public int[] heights;//?
 	public int width;
@@ -14,10 +13,6 @@ public class Sprite {
 	public String[] filePathes;
 	public Rectangle[] boundingBoxes;
 	public Rectangle boundingBox;
-	
-//	public Rectangle[] attackingCollisionBoxes; // this and the one below might not be happening
-//	public Rectangle[] selfCollisionBoxes;
-	
 	public BufferedImage image;
 	public BufferedImage[] images;
 	public boolean spriteLoaded = false;
@@ -26,8 +21,12 @@ public class Sprite {
 	public double trueMod;
 	boolean keepEnd = false;
   
-	
-	public Sprite(int width, int height, String filePath) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
+	/*
+	 * This class can be found in all GameObjects. It loads an image with a certain height and width, and may cycle through images if multiple are provided. The rate
+	 * of cycling can be changed with the trueMod parameter. This class represents a single state--for example, running left, standing still, or falling. Each GameObject
+	 * may have multiple sprites to represent different states.
+	 */
+	public Sprite(int width, int height, String filePath) {
 		this.widthes = new int[] {width};
 		this.heights = new int[] {height};
 		this.boundingBoxes = new Rectangle[] {new Rectangle(width, height)};
@@ -40,13 +39,12 @@ public class Sprite {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			spriteLoaded = false;
-//			e.printStackTrace();
 		}
 		
 		updateImage();
 	}
 	
-	public Sprite(int[] width, int[] height, String[] filePath, double trueMod, boolean keepEnd) { // add the stuff for the bounding boxes and collisions. eacn rectangle itself needs a x, y, and width and height. to some degree those can be derived from the given x and y.... i guess! yippee.
+	public Sprite(int[] width, int[] height, String[] filePath, double trueMod, boolean keepEnd) {
 		this.widthes = width;
 		this.heights = height;
 		this.filePathes = filePath;
@@ -64,13 +62,15 @@ public class Sprite {
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		spriteLoaded = false;
-//		e.printStackTrace();
 	}
 			}
 		}
 		updateImage();
 	}
 	
+	/*
+	 * This method cycles between images for the sprite. It also may keep the last image or cycle back to the first depending on the input given in its constructor.
+	 */
 	public void updateImage() {
 		if (!keepEnd) {
 			animationInt = animationInt%modVal;

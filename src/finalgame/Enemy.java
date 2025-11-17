@@ -15,6 +15,9 @@ public class Enemy extends Entity{
 	
 	int visor = 2;
 	
+	/*
+	 * Enemy class. May belong to a platform, and will stay on that platform, and even move with it if applicable.
+	 */
 	public Enemy(int id, int xPosition, int yPosition, int movementRangeX, int movementRangeY, int velocityX, int velocityY, String[] spriteNames, Sprite[] sprites) {
 		super(id, xPosition, yPosition, movementRangeX, movementRangeY, velocityX, velocityY, spriteNames, sprites);
 //		this.canVisor = canVisor;
